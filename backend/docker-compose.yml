@@ -1,0 +1,36 @@
+version: '3.4'
+networks:
+  knifeshop-network:
+    driver: bridge
+services:
+    postgres:
+        container_name: knifeshop-postgres
+        image: postgres
+        restart: always
+        environment:
+          POSTGRES_DB: knifeshop
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        volumes:
+          - knifeshop-postgres-data:/var/lib/postgresql/data
+        networks:
+          - knifeshop-network
+    knifeshop.api:
+        depends_on:
+          - postgres
+        container_name: knifeshop.api
+        image: knifeshop.api
+        build:
+          context: .
+          dockerfile: KnifeShop.API/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+        ports:
+          - "5000:8080"
+          - "5001:8081"
+        networks:
+          - knifeshop-network
+volumes:
+  knifeshop-postgres-data:

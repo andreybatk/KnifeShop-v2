@@ -1,0 +1,43 @@
+:host {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100dvh;
+  align-items: center;
+  margin: 0 5%;
+}
+
+.register-form * { 
+  box-sizing: border-box;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-eye-btn {
+  position: absolute;
+  top:50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #FFFFFFBF;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.password-eye-btn.active {
+  color: var(--primary-color);
+}
+
+.btn-shadow.inactive {
+  background-color: var(--gray-color);
+}
+
+.input.ng-touched.ng-invalid {
+  border: solid var(--red-color) 2px;
+}
+
+.input.ng-touched.ng-valid {
+  border: solid var(--green-color) 2px;
+}

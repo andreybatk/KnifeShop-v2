@@ -1,0 +1,21 @@
+@if(knife)
+{
+    <div class="knife-card">
+        <div class="avarar-name">
+            <img [src] = "knife.image | imgUrl" alt="" class="knife-card__avatar">
+
+            <div class="knife-card__name">
+                <strong class="h6">{{knife.title}}</strong>
+                <span class="subtitle">{{knife.category}}</span>
+            </div>
+        </div>
+
+        <div class="knife-card__price">
+            {{knife.price}}
+        </div>
+
+        <div class="knife-card__action-btns">
+            <button class="btn">Написать продавцу</button>
+        </div>
+    </div>
+}

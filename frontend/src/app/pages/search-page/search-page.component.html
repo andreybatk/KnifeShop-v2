@@ -1,0 +1,6 @@
+<h1>Search knifes</h1>
+@for(knife of knifesPaginated; track knife.id) {
+  <div class="knife-card__wrapper">
+      <app-knife-card [knife] = "knife"> </app-knife-card>
+  </div>
+}
