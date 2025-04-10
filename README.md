@@ -3,5 +3,5 @@
 
 ## Технологии
 - ASP NET CORE WEB API  (.NET 8)
-- React 18
+- Angular 19
 - PostgreeSQL

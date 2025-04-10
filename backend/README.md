@@ -1,4 +1,4 @@
-# Knife Shop
+# Knife Shop v2
 Магазин ножей.
 Регистрация/Авторизация с JWT Token.
 
