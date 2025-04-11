@@ -1,6 +1,6 @@
 ﻿namespace KnifeShop.API.Contracts.Knife
 {
-    public class PaginatedResponse
+    public class GetKnifesResponse
     {
         public long Id { get; set; }
         public string Title { get; set; } = string.Empty;

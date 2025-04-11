@@ -1,0 +1,44 @@
+.knife-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  max-width: 320px;
+  margin: 2%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .avarar-name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .knife-card__avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-right: 16px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .knife-card__name {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .knife-card__price {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+}

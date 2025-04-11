@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { KnifeService } from '../../data/services/knife.service';
-import { KnifePaginated } from '../../data/interfaces/knife-paginated.interface';
+import { KnifeBriefly, } from '../../data/interfaces/knife-briefly.interface';
 import { KnifeCardComponent } from '../../common-ui/knife-card/knife-card.component';
 
 @Component({
@@ -14,12 +13,12 @@ import { KnifeCardComponent } from '../../common-ui/knife-card/knife-card.compon
 
 export class SearchPageComponent {
   knifeService = inject(KnifeService)
-  knifesPaginated: KnifePaginated[] = []
+  knifesBriefly: KnifeBriefly[] = []
   
   constructor() {
     this.knifeService.getKnifesPaginated()
       .subscribe(val => {
-        this.knifesPaginated = val
+        this.knifesBriefly = val
     })
   }
 }

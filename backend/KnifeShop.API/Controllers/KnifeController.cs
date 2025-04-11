@@ -85,7 +85,7 @@ namespace KnifeShop.API.Controllers
         }
 
         [HttpGet("paginated")]
-        [ProducesResponseType(typeof(List<PaginatedResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetPaginated([FromQuery] GetKnifesPaginationRequest request)
         {
@@ -97,18 +97,18 @@ namespace KnifeShop.API.Controllers
                 request.PageSize
             );
 
-            var response = new List<PaginatedResponse>(result.TotalCount);
+            var response = new List<GetKnifesResponse>(result.TotalCount);
             
             foreach( var item in result.Items )
             {
-                response.Add(new PaginatedResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
+                response.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
             }
 
             return Ok(response);
         }
 
         [HttpGet("on_sale")]
-        [ProducesResponseType(typeof(List<Knife>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetOnSale([FromQuery] GetKnifesRequest request)
         {
             var result = await _knifeRepository.GetOnSale(
@@ -117,7 +117,14 @@ namespace KnifeShop.API.Controllers
                 request.SortOrder
             );
 
-            return Ok(result);
+            var response = new List<GetKnifesResponse>(result.Count);
+
+            foreach (var item in result)
+            {
+                response.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

@@ -1,0 +1,16 @@
+<header class="header">
+  <nav class="nav">
+    <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Главная</a>
+    <a routerLink="/search" routerLinkActive="active">Каталог</a>
+  </nav>
+
+  <button>
+    {{ authService.username }}
+  </button>
+
+  <button class="mat-menu__custom" (click)="authService.logout()">Выйти</button>
+
+  <nav *ngIf="!authService.isAuth" routerLink="/login" class="login-btn">
+    Вход
+  </nav>
+</header>

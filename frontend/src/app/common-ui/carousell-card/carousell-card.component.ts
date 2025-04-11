@@ -3,11 +3,11 @@ import { KnifeBriefly } from '../../data/interfaces/knife-briefly.interface';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 
 @Component({
-  selector: 'app-knife-card',
+  selector: 'app-carousell-card',
   imports: [ImgUrlPipe],
-  templateUrl: './knife-card.component.html',
-  styleUrl: './knife-card.component.scss'
+  templateUrl: './carousell-card.component.html',
+  styleUrl: './carousell-card.component.scss'
 })
-export class KnifeCardComponent {
+export class CarousellCardComponent {
   @Input() knife!: KnifeBriefly;
 }

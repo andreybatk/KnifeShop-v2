@@ -1,4 +1,4 @@
-export interface KnifePaginated {
+export interface KnifeBriefly {
   id: number,
   title: string,
   category: string,

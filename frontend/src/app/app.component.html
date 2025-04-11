@@ -1,6 +1,3 @@
-<div *ngIf="authService.isAuth" class="user-info">
-  👋 Привет, {{ authService.username }}
-  <button (click)="authService.logout()">Выйти</button>
-</div>
+<app-header></app-header>
 
 <router-outlet></router-outlet>

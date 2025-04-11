@@ -1,0 +1,9 @@
+<div class="slick-wrapper">
+  <ngx-slick-carousel class="carousel" [config]="slideConfig">
+    @for (knife of knifesBriefly; track knife.id) {
+      <div ngxSlickItem class="slide">
+            <app-carousell-card [knife] = "knife" > </app-carousell-card>
+      </div>
+  }
+  </ngx-slick-carousel>
+</div>
