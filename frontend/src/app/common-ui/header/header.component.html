@@ -4,11 +4,15 @@
     <a routerLink="/search" routerLinkActive="active">Каталог</a>
   </nav>
 
-  <button>
-    {{ authService.username }}
-  </button>
+  <div class="user-info" *ngIf="authService.isAuth" (click)="toggleDropdown()">
+    <button class="user-info button">
+      {{ authService.username }}
+    </button>
 
-  <button class="mat-menu__custom" (click)="authService.logout()">Выйти</button>
+    <ul class="dropdown" *ngIf="isDropdownOpen">
+      <li (click)="authService.logout()">Выйти</li>
+    </ul>
+  </div>
 
   <nav *ngIf="!authService.isAuth" routerLink="/login" class="login-btn">
     Вход

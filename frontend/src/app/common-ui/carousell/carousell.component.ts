@@ -12,7 +12,6 @@ import { CarousellCardComponent } from "../carousell-card/carousell-card.compone
 })
 export class CarousellComponent implements OnInit {
   knifeService = inject(KnifeService)
-
   ngOnInit() {
     // this.knifeService.getKnifesPaginated()
     //   .subscribe(val => {
@@ -28,9 +27,19 @@ export class CarousellComponent implements OnInit {
   ];
 
   slideConfig = {
-    "slidesToShow": 3,
-    "slidesToScroll": 1,
-    "dots": true,
-    "infinite": true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
 }
