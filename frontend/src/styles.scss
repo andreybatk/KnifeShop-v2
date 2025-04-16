@@ -68,6 +68,18 @@ body {
   }
 }
 
+.btn-shadow.inactive {
+  background-color: var(--gray-color);
+}
+
+.input.ng-touched.ng-invalid {
+  border: solid var(--red-color) 2px;
+}
+
+.input.ng-touched.ng-valid {
+  border: solid var(--green-color) 2px;
+}
+
 .h1 {
   font-size: 48px;
   line-height: 56px;

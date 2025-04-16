@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { KnifeBriefly } from '../../data/interfaces/knife-briefly.interface';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
+import { KnifeBriefly } from '../../data/interfaces/knife.interface';
 
 @Component({
   selector: 'app-knife-card',

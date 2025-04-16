@@ -16,7 +16,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   return next(addToken(req, token))
   .pipe(
     catchError(error => {
-      if(error.status === 403) {
+      if(error.status === 401) {
         return refreshAndProceed(authService, req, next)
       }
 
@@ -44,7 +44,6 @@ const refreshAndProceed = (
     }
     
     if(req.url.includes('refresh')) return next(addToken(req, authService.token!))
-    // return next(addToken(req, authService.token!))
 
     return isRefreshing$.pipe(
       filter(isRefreshing => !isRefreshing$),

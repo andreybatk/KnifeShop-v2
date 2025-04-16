@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { KnifeService } from '../../data/services/knife.service';
-import { KnifeBriefly } from '../../data/interfaces/knife-briefly.interface';
 import { CarousellCardComponent } from "../carousell-card/carousell-card.component";
+import { KnifeBriefly } from '../../data/interfaces/knife.interface';
 
 @Component({
   selector: 'app-carousell',

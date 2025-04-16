@@ -10,6 +10,7 @@
     </button>
 
     <ul class="dropdown" *ngIf="isDropdownOpen">
+      <li routerLink="/admin-panel">Админ панель</li>
       <li (click)="authService.logout()">Выйти</li>
     </ul>
   </div>

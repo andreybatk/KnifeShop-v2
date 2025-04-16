@@ -9,8 +9,8 @@ namespace KnifeShop.BL.DiContainer
         {
             services.AddScoped<IUploadFileService, UploadFileService>();
             services.AddScoped<AuthenticatorService>();
+            services.AddScoped<AccessTokenGeneratorService>();
 
-            services.AddSingleton<AccessTokenGeneratorService>();
             services.AddSingleton<RefreshTokenGeneratorService>();
             services.AddSingleton<TokenGeneratorService>();
         }

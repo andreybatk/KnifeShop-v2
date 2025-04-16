@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { TokenResponse } from './auth.interface';
+import { JwtPayload, TokenResponse } from './auth.interface';
 import { tap, throwError, catchError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,7 @@ export class AuthService {
     return this.http.post<TokenResponse>(
       `${this.baseApiUrl}refresh`,
       {
-        refresh_token: this.refreshToken
+        refreshToken: this.refreshToken
       })
       .pipe(
           tap(val => this.saveTokens(val)),
@@ -84,5 +85,27 @@ export class AuthService {
     {
       this.cookieService.set('username', username);
     }
+  }
+
+  get userRoles(): string[] {
+    if (!this.token) {
+      this.token = this.cookieService.get('token');
+    }
+  
+    if (!this.token) return [];
+  
+    try {
+      const decoded = jwtDecode<JwtPayload>(this.token);
+      const roles = decoded.role;
+      if (!roles) return [];
+  
+      return Array.isArray(roles) ? roles : [roles];
+    } catch (e) {
+      return [];
+    }
+  }
+  
+  hasRole(role: string): boolean {
+    return this.userRoles.includes(role);
   }
 }

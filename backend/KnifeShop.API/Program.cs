@@ -1,64 +1,33 @@
 using KnifeShop.API.DiContainer;
-using KnifeShop.BL.Helpers;
 using KnifeShop.BL.DiContainer;
+using KnifeShop.BL.Helpers;
 using KnifeShop.DB;
 using KnifeShop.DB.DiContainer;
 using KnifeShop.DB.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace KnifeShop.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = builder.Configuration.GetConnectionString(
                 "DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            var admins = builder.Configuration.GetSection("Admins:admin").Get<List<string>>();
-
             var authenticationConfiguration = new AuthenticationConfiguration();
             builder.Configuration.Bind("Authentication", authenticationConfiguration);
             builder.Services.AddSingleton(authenticationConfiguration);
 
             builder.Services.AddControllers();
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //})
-            //.AddCookie()
-            //.AddGoogle(options =>
-            //{
-            //    options.ClientId = builder.Configuration.GetSection("Google:ClientId").Get<string>() ?? throw new InvalidOperationException("Google 'ClientId' not found.");
-            //    options.ClientSecret = builder.Configuration.GetSection("Google:ClientSecret").Get<string>() ?? throw new InvalidOperationException("Google 'ClientSecret' not found.");
-
-            //    options.Events.OnCreatingTicket = context =>
-            //    {
-            //        var claims = context.Identity?.Claims?.ToList() ?? new List<Claim>();
-            //        var email = context.Identity?.Name;
-
-            //        if (admins != null && email != null && admins.Contains(email))
-            //        {
-            //            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-            //        }
-            //        else
-            //        {
-            //            claims.Add(new Claim(ClaimTypes.Role, "User"));
-            //        }
-
-            //        context.Identity?.AddClaims(claims);
-            //        return Task.CompletedTask;
-            //    };
-            //});
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -69,9 +38,8 @@ namespace KnifeShop.API
                     Scheme = "bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Введите JWT токен, начиная с Bearer. Пример: Bearer {your token}"
+                    Description = "JWT token. Example: {your token}"
                 });
-
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -91,7 +59,8 @@ namespace KnifeShop.API
             {
                 options.UseNpgsql(connectionString);
             });
-            builder.Services.AddIdentityCore<User>(options =>
+
+            builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
             {
                 options.User.RequireUniqueEmail = true;
 
@@ -101,10 +70,22 @@ namespace KnifeShop.API
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+            });
 
             builder.Services.AddRepositories();
             builder.Services.AddServices();
-
             builder.Services.AddValidators();
 
             builder.Services.AddCors(options =>
@@ -117,7 +98,12 @@ namespace KnifeShop.API
                 });
             });
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -130,7 +116,17 @@ namespace KnifeShop.API
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            builder.Services.AddAuthorization();
+
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                await SeedData.SeedRolesAsync(services);
+                await SeedData.SeedAdminUserAsync(services, authenticationConfiguration.AdminEmail, authenticationConfiguration.AdminPassword);
+            }
 
             if (app.Environment.IsDevelopment())
             {
@@ -144,7 +140,7 @@ namespace KnifeShop.API
                 RequestPath = "/Uploads"
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
@@ -159,3 +155,33 @@ namespace KnifeShop.API
         }
     }
 }
+
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//})
+//.AddCookie()
+//.AddGoogle(options =>
+//{
+//    options.ClientId = builder.Configuration.GetSection("Google:ClientId").Get<string>() ?? throw new InvalidOperationException("Google 'ClientId' not found.");
+//    options.ClientSecret = builder.Configuration.GetSection("Google:ClientSecret").Get<string>() ?? throw new InvalidOperationException("Google 'ClientSecret' not found.");
+
+//    options.Events.OnCreatingTicket = context =>
+//    {
+//        var claims = context.Identity?.Claims?.ToList() ?? new List<Claim>();
+//        var email = context.Identity?.Name;
+
+//        if (admins != null && email != null && admins.Contains(email))
+//        {
+//            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+//        }
+//        else
+//        {
+//            claims.Add(new Claim(ClaimTypes.Role, "User"));
+//        }
+
+//        context.Identity?.AddClaims(claims);
+//        return Task.CompletedTask;
+//    };
+//});

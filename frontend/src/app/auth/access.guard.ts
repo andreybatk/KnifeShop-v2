@@ -21,3 +21,24 @@ export const canActivateGuest = () => {
 
   return inject(Router).createUrlTree(['/search']);
 };
+
+export const canActivateRole = (requiredRoles: string[]) => {
+  return () => {
+    const auth = inject(AuthService);
+    const router = inject(Router);
+
+    if (!auth.isAuth) {
+      return router.createUrlTree(['/login']);
+    }
+
+    const userRoles = auth.userRoles;
+
+    const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
+
+    if (hasRequiredRole) {
+      return true;
+    }
+
+    return router.createUrlTree(['/access-denied']);
+  };
+};

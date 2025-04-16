@@ -1,0 +1,86 @@
+<form
+  class="create-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h3 class="h3 mb60">Добавление ножа</h3>
+
+  <label class="tt-control-label mb16">
+    Название *
+    <input formControlName="title" class="input tt-input" type="text" placeholder="Введите название" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Категория *
+    <input formControlName="category" class="input tt-input" type="text" placeholder="Введите категорию" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Цена *
+    <input formControlName="price" class="input tt-input" type="number" placeholder="Введите цену" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Описание
+    <textarea formControlName="description" class="input tt-input" placeholder="Введите описание"></textarea>
+  </label>
+
+  <label class="tt-control-label mb16">
+    В продаже
+    <input formControlName="isOnSale" class="" type="checkbox" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Главное изображение
+    <input formControlName="image" class="input tt-input" type="file" placeholder="Выберите изображение" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Изображения
+    <input formControlName="images" class="input tt-input" type="file" multiple />
+  </label>
+
+  <h4 class="h4 mb16">Информация о ноже</h4>
+  <div formGroupName="knifeInfo">
+    <label class="tt-control-label mb16">
+      Общая длина
+      <input formControlName="overallLength" class="input tt-input" type="number" placeholder="Введите общую длину" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Длина лезвия
+      <input formControlName="bladeLength" class="input tt-input" type="number" placeholder="Введите длину лезвия" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Толщина рукоятки
+      <input formControlName="buttThickness" class="input tt-input" type="number" placeholder="Введите толщину рукоятки" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Вес
+      <input formControlName="weight" class="input tt-input" type="number" placeholder="Введите вес" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Материал рукоятки
+      <input formControlName="handleMaterial" class="input tt-input" type="text" placeholder="Введите материал рукоятки" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Страна
+      <input formControlName="country" class="input tt-input" type="text" placeholder="Введите страну" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Производитель
+      <input formControlName="manufacturer" class="input tt-input" type="text" placeholder="Введите производителя" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Степень стали
+      <input formControlName="steelGrade" class="input tt-input" type="text" placeholder="Введите степень стали" />
+    </label>
+  </div>  
+  <button class="btn btn-shadow mb16" [class.inactive]="form.invalid" type="submit">Создать нож</button>
+</form>

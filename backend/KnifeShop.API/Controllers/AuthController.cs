@@ -7,6 +7,7 @@ using KnifeShop.DB.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -89,6 +90,11 @@ namespace KnifeShop.API.Controllers
             if (user == null)
             {
                 return Unauthorized();
+            }
+
+            if(user.UserName == null)
+            {
+                return Unauthorized("Username is null.");
             }
 
             bool isCorrectPassword = await _userManager.CheckPasswordAsync(user, loginRequest.Password);

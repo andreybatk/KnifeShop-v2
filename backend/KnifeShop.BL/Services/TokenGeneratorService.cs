@@ -7,7 +7,7 @@ namespace KnifeShop.BL.Services
 {
     public class TokenGeneratorService
     {
-        public string GenerateToken(string secretKey, string issuer, string audience, DateTime expirationTime, IEnumerable<Claim> claims = null)
+        public string GenerateToken(string secretKey, string issuer, string audience, DateTime expirationTime, IEnumerable<Claim>? claims = null)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -19,7 +19,7 @@ namespace KnifeShop.BL.Services
 
         public async Task<AuthenticatedUser> AuthenticateAsync(User user)
         {
-            AccessToken accessToken = _accessTokenGenerator.GenerateToken(user);
+            var accessToken = await _accessTokenGenerator.GenerateToken(user);
             string refreshToken = _refreshTokenGenerator.GenerateToken();
 
             RefreshToken refreshTokenDTO = new RefreshToken()
@@ -27,6 +27,7 @@ namespace KnifeShop.BL.Services
                 Token = refreshToken,
                 UserId = user.Id
             };
+
             await _refreshTokenRepository.Create(refreshTokenDTO);
 
             return new AuthenticatedUser()

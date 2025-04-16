@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { KnifeService } from '../../data/services/knife.service';
-import { KnifeBriefly, } from '../../data/interfaces/knife-briefly.interface';
 import { KnifeCardComponent } from '../../common-ui/knife-card/knife-card.component';
+import { KnifeBriefly } from '../../data/interfaces/knife.interface';
 
 @Component({
   selector: 'app-search-page',

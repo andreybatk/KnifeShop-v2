@@ -16,8 +16,8 @@ namespace KnifeShop.API.Controllers
         private readonly IKnifeRepository _knifeRepository;
         private readonly IUploadFileService _fileService;
 
-        private IValidator<CreateKnifeRequest> _createKnifeValidator;
-        private IValidator<EditKnifeRequest> _editKnifeValidator;
+        private readonly IValidator<CreateKnifeRequest> _createKnifeValidator;
+        private readonly IValidator<EditKnifeRequest> _editKnifeValidator;
 
         public KnifeController(IKnifeRepository knifeRepository, IUploadFileService fileService, IValidator<CreateKnifeRequest> createKnifeValidator, IValidator<EditKnifeRequest> editKnifeValidator)
         {
@@ -44,7 +44,7 @@ namespace KnifeShop.API.Controllers
                 var imagesPath = await _fileService.UploadImages(request.Images);
 
                 var id = await _knifeRepository.Create(request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
-                    request.OverallLength, request.BladeLength, request.ButtThickness, request.Weight, request.HandleMaterial, request.Country, request.Manufacturer, request.SteelGrade);
+                    request?.KnifeInfo?.OverallLength ?? null, request?.KnifeInfo?.BladeLength ?? null, request?.KnifeInfo?.ButtThickness ?? null, request?.KnifeInfo?.Weight ?? null, request?.KnifeInfo?.HandleMaterial ?? null, request?.KnifeInfo?.Country ?? null, request?.KnifeInfo?.Manufacturer ?? null, request?.KnifeInfo?.SteelGrade ?? null);
 
                 return Ok(id);
             }
@@ -70,9 +70,9 @@ namespace KnifeShop.API.Controllers
                 var imagesPath = await _fileService.UploadImages(request.Images);
 
                 var result = await _knifeRepository.Edit(id, request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
-                     request.OverallLength, request.BladeLength, request.ButtThickness, request.Weight, request.HandleMaterial, request.Country, request.Manufacturer, request.SteelGrade);
+                     request?.KnifeInfo?.OverallLength ?? null, request?.KnifeInfo?.BladeLength ?? null, request?.KnifeInfo?.ButtThickness ?? null, request?.KnifeInfo?.Weight ?? null, request?.KnifeInfo?.HandleMaterial ?? null, request?.KnifeInfo?.Country ?? null, request?.KnifeInfo?.Manufacturer ?? null, request?.KnifeInfo?.SteelGrade ?? null);
 
-                if(result is null)
+                if (result is null)
                 {
                     return BadRequest($"Edit knife with Id {id} is fault.");
                 }

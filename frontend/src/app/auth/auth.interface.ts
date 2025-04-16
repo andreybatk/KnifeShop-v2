@@ -3,3 +3,8 @@ export interface TokenResponse {
   accessTokenExpirationTime: Date,
   refreshToken: string
 }
+
+export interface JwtPayload {
+  role?: string | string[];
+  [key: string]: any;
+}

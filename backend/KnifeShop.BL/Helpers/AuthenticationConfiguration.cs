@@ -8,5 +8,7 @@
         public string Audience { get; set; } = string.Empty;
         public string RefreshTokenSecret { get; set; } = string.Empty;
         public double RefreshTokenExpirationMinutes { get; set; }
+        public string AdminEmail { get; set; } = string.Empty;
+        public string AdminPassword { get; set; } = string.Empty;
     }
 }
