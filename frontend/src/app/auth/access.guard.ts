@@ -9,7 +9,7 @@ export const canActivateAuth = () => {
       return true
   }
 
-  return inject(Router).createUrlTree(['/login'])
+  return inject(Router).navigate(['/login'])
 }
 
 export const canActivateGuest = () => {
@@ -19,19 +19,19 @@ export const canActivateGuest = () => {
     return true;
   }
 
-  return inject(Router).createUrlTree(['/search']);
+  return inject(Router).navigate(['/search']);
 };
 
 export const canActivateRole = (requiredRoles: string[]) => {
   return () => {
-    const auth = inject(AuthService);
+    const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!auth.isAuth) {
-      return router.createUrlTree(['/login']);
+    if (!authService.isAuth) {
+      return router.navigate(['/login']);
     }
 
-    const userRoles = auth.userRoles;
+    const userRoles = authService.userRoles;
 
     const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
 
@@ -39,6 +39,6 @@ export const canActivateRole = (requiredRoles: string[]) => {
       return true;
     }
 
-    return router.createUrlTree(['/access-denied']);
+    return router.navigate(['/access-denied']);
   };
 };

@@ -1,0 +1,48 @@
+<div *ngIf="knife" class="knife-card">
+  <div class="top-section">
+    <img [src]="knife.image | imgUrl" alt="{{ knife.title }}" (click)="openImage(knife.image)" class="knife-image" />
+
+    <div class="knife-details">
+      <h2 class="knife-title">{{ knife.title }}</h2>
+      <p class="knife-category">Категория: {{ knife.category }}</p>
+      <p class="knife-price">Цена: {{ knife.price }} &#8381;</p>
+      <p class="knife-sale" *ngIf="!knife.isOnSale">Отсутствует в продаже.</p>
+      <div *ngIf="isAdmin" class="admin-btns">
+        <button class="btn" (click) = "onClickEdit()">Редактировать</button>
+      </div>
+
+      <div *ngIf="knife.knifeInfo" class="knife-specs">
+        <h3>Характеристики:</h3>
+        <ul>
+          <li>Общая длина: {{ knife.knifeInfo.overallLength }} мм</li>
+          <li>Длина клинка: {{ knife.knifeInfo.bladeLength }} мм</li>
+          <li>Толщина обуха: {{ knife.knifeInfo.buttThickness }} мм</li>
+          <li>Вес: {{ knife.knifeInfo.weight }} г</li>
+          <li>Материал рукояти: {{ knife.knifeInfo.handleMaterial }}</li>
+          <li>Сталь: {{ knife.knifeInfo.steelGrade }}</li>
+          <li>Производитель: {{ knife.knifeInfo.manufacturer }}</li>
+          <li>Страна: {{ knife.knifeInfo.country }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="knife-description">{{ knife.description }}</p>
+
+  <div class="knife-gallery" *ngIf="knife.images?.length">
+    <h4>Галерея:</h4>
+    <div class="gallery">
+      <img
+        *ngFor="let img of knife.images"
+        [src]="img | imgUrl"
+        class="gallery-img"
+        (click)="openImage(img)"
+        alt="Gallery image"
+      />
+    </div>
+  </div>
+
+  <div class="popup" *ngIf="selectedImage" (click)="closeImage()">
+    <img [src]="selectedImage" alt="Full view" />
+  </div>
+</div>

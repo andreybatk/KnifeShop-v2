@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateKnifeDto, KnifeBriefly, KnifeInfo } from '../interfaces/knife.interface';
+import { CreateKnifeDto, Knife, KnifeBriefly, KnifeInfo } from '../interfaces/knife.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +14,31 @@ export class KnifeService {
     return this.http.get<KnifeBriefly[]>(`${this.baseApiUrl}/paginated`)
   }
 
-  createKnife(payload: CreateKnifeDto) {
+  getKnife(id: number) {
+    return this.http.get<Knife>(`${this.baseApiUrl}/${id}`)
+  }
+
+  createKnife(payload: CreateKnifeDto, image: File | null = null, images: File[]) {
     const formData = new FormData()
     
     formData.append('title', payload.title)
     formData.append('category', payload.category)
     formData.append('price', payload.price.toString())
-    formData.append('description', payload.description)
     formData.append('isOnSale', payload.isOnSale.toString())
-    formData.append('image', payload.image)
 
-    if(payload.images)
+    if(payload.description)
     {
-      payload.images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image)
+      formData.append('description', payload.description)
+    }
+
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+
+    if(images)
+    {
+      images.forEach((img) => {
+        formData.append('images', img, img.name);
       })
     }
     

@@ -9,6 +9,7 @@
   --primary-dark-color: #451e85;
   --gray-color: #5F646D;
   --red-color: #96233f;
+  --red-light-color: #cf3f63;
   --green-color: #137a0f;
 }
 
@@ -53,6 +54,13 @@ body {
   }
 }
 
+.btn.danger {
+  background: var(--red-color);
+
+  &:hover {
+    background-color: var(--red-light-color);
+  }
+}
 .btn-shadow {
   position: relative;
   &::before {

@@ -1,9 +1,8 @@
 @if(knife)
 {
-    <div class="knife-card">
+    <div class="knife-card" (click) = "onClickCard()">
         <div class="avarar-name">
-            <!-- <img [src] = "knife.image | imgUrl" alt="" class="knife-card__avatar"> -->
-            <img [src] = "knife.image" alt="" class="knife-card__avatar">
+            <img [src] = "knife.image | imgUrl" alt="" class="knife-card__avatar">
 
             <div class="knife-card__name">
                 <strong class="h6">{{knife.title}}</strong>

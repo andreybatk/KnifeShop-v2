@@ -12,24 +12,18 @@ import { KnifeBriefly } from '../../data/interfaces/knife.interface';
 })
 export class CarousellComponent implements OnInit {
   knifeService = inject(KnifeService)
-  ngOnInit() {
-    // this.knifeService.getKnifesPaginated()
-    //   .subscribe(val => {
-    //     this.knifesBriefly = val
-    // })
-  }
+  knifesBriefly: KnifeBriefly[] = []
 
-  knifesBriefly: KnifeBriefly[] = [
-    { image: '/assets/svg/logo-big.png', category: 'Category 1', id: 1, isOnSale: true, price: 400, title: 'Noj'},
-    { image: '/assets/svg/logo-big.png', category: 'Category 1', id: 2, isOnSale: true, price: 400, title: 'Noj'},
-    { image: '/assets/svg/logo-big.png', category: 'Category 1', id: 3, isOnSale: true, price: 400, title: 'Noj'},
-    { image: '/assets/svg/logo-big.png', category: 'Category 1', id: 4, isOnSale: true, price: 400, title: 'Noj'},
-  ];
+  ngOnInit() {
+    this.knifeService.getKnifesPaginated()
+      .subscribe(knife => {
+        this.knifesBriefly = knife
+    })
+  }
 
   slideConfig = {
     slidesToShow: 3,
     slidesToScroll: 1,
-    dots: true,
     infinite: true,
     arrows: true,
     responsive: [
