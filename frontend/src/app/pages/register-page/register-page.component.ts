@@ -38,7 +38,6 @@ export class RegisterPageComponent {
             this.router.navigate(['login']);
           },
           error: (err) => {
-            console.log('Full error object from register page:', err);
             if (err?.error) {
               this.errors = err.error.map((e: any) => e.description);
             } else {

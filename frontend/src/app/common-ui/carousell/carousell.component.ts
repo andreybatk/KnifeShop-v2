@@ -15,7 +15,7 @@ export class CarousellComponent implements OnInit {
   knifesBriefly: KnifeBriefly[] = []
 
   ngOnInit() {
-    this.knifeService.getKnifesPaginated()
+    this.knifeService.getKnifesOnSale()
       .subscribe(knife => {
         this.knifesBriefly = knife
     })

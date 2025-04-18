@@ -1,0 +1,31 @@
+:host {
+  display:grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin: 0 5%;
+}
+
+.create-form * { 
+  box-sizing: border-box;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.gallery-img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--light-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+}

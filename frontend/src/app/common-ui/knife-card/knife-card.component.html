@@ -1,6 +1,6 @@
 @if(knife)
 {
-    <div class="knife-card">
+    <div class="knife-card" (click) = "onClickCard()">
         <div class="avarar-name">
             <img [src] = "knife.image | imgUrl" alt="" class="knife-card__avatar">
 
@@ -11,11 +11,9 @@
         </div>
 
         <div class="knife-card__price">
-            {{knife.price}}
+            {{knife.price}} &#8381;
         </div>
 
-        <div class="knife-card__action-btns">
-            <button class="btn">Написать продавцу</button>
-        </div>
+        <button class="btn">Подробнее</button>
     </div>
 }

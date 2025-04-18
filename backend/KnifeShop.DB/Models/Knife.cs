@@ -23,6 +23,6 @@
         public double Price { get; set; }
         public bool IsOnSale { get; set; }
         public DateTime CreatedAt { get; set; }
-        public KnifeInfo KnifesInfo { get; set; } = null!;
+        public KnifeInfo KnifeInfo { get; set; } = null!;
     }
 }

@@ -33,6 +33,11 @@ export interface KnifeBriefly {
   isOnSale: boolean,
 }
 
+export interface KnifesPaginated {
+  knifes: KnifeBriefly[],
+  totalCount: number
+}
+
 export interface CreateKnifeDto {
   title: string,
   category: string,
@@ -40,4 +45,22 @@ export interface CreateKnifeDto {
   price: number,
   isOnSale: boolean,
   knifeInfo: KnifeInfo
+}
+
+export interface EditKnifeDto {
+  id: number,
+  title: string,
+  category: string,
+  description: string | null,
+  price: number,
+  isOnSale: boolean,
+  knifeInfo: KnifeInfo
+}
+
+export interface GetKnifesPaginationDto {
+  search: string | null;
+  sortItem: string | null;
+  sortOrder: 'asc' | 'desc' | null;
+  page: number | null;
+  pageSize: number | null;
 }

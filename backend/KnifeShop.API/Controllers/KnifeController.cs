@@ -58,7 +58,7 @@ namespace KnifeShop.API.Controllers
         /// </remarks>
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Edit([FromRoute] long id, [FromForm] EditKnifeRequest request)
         {
@@ -69,15 +69,15 @@ namespace KnifeShop.API.Controllers
                 var imagePath = await _fileService.UploadImage(request.Image);
                 var imagesPath = await _fileService.UploadImages(request.Images);
 
-                var result = await _knifeRepository.Edit(id, request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
+                var resultId = await _knifeRepository.Edit(id, request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
                      request?.KnifeInfo?.OverallLength ?? null, request?.KnifeInfo?.BladeLength ?? null, request?.KnifeInfo?.ButtThickness ?? null, request?.KnifeInfo?.Weight ?? null, request?.KnifeInfo?.HandleMaterial ?? null, request?.KnifeInfo?.Country ?? null, request?.KnifeInfo?.Manufacturer ?? null, request?.KnifeInfo?.SteelGrade ?? null);
 
-                if (result is null)
+                if (resultId == 0)
                 {
                     return BadRequest($"Edit knife with Id {id} is fault.");
                 }
 
-                return Ok();
+                return Ok(resultId);
             }
 
             validationResult.AddToModelState(ModelState);
@@ -85,7 +85,7 @@ namespace KnifeShop.API.Controllers
         }
 
         [HttpGet("paginated")]
-        [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(KnifesWithTotalCountResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetPaginated([FromQuery] GetKnifesPaginationRequest request)
         {
@@ -97,12 +97,18 @@ namespace KnifeShop.API.Controllers
                 request.PageSize
             );
 
-            var response = new List<GetKnifesResponse>(result.TotalCount);
+            var knifes = new List<GetKnifesResponse>(result.TotalCount);
             
             foreach( var item in result.Items )
             {
-                response.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
+                knifes.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
             }
+
+            var response = new KnifesWithTotalCountResponse
+            {
+                Knifes = knifes,
+                TotalCount = result.TotalCount
+            };
 
             return Ok(response);
         }

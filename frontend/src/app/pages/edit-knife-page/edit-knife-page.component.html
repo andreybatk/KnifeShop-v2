@@ -1,1 +1,104 @@
-<p>edit-knife-page works!</p>
+<form
+  *ngIf="knife"
+  class="create-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h3 class="h3 mb60">Редактирование ножа</h3>
+
+  <label class="tt-control-label mb16">
+    Название *
+    <input formControlName="title" class="input tt-input" type="text" placeholder="Введите название" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Категория *
+    <input formControlName="category" class="input tt-input" type="text" placeholder="Введите категорию" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Цена *
+    <input formControlName="price" class="input tt-input" type="number" placeholder="Введите цену" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Описание
+    <textarea formControlName="description" class="input tt-input" placeholder="Введите описание"></textarea>
+  </label>
+
+  <label class="tt-control-label mb16">
+    В продаже
+      <input formControlName="isOnSale" class="" type="checkbox" />
+  </label>
+
+  <label class="tt-control-label mb16">
+    Главное изображение
+    <input formControlName="image" class="input tt-input" accept=".png, .jpg, .jpeg" type="file" (change)="onImageSelected($event)" placeholder="Выберите изображение" />
+    <div class="error-text mt8" *ngIf="form.controls.image.hasError('notSupportedFileType')">
+      Поддерживаемые типы файлов: .png, .jpg, .jpeg
+    </div>
+    <div class="gallery">
+      <img [src]="knife.image | imgUrl" alt="{{ knife.title }}" class="gallery-img" />
+    </div>
+  </label>
+
+  <label class="tt-control-label mb16">
+    Изображения
+    <input formControlName="images" class="input tt-input" accept=".png, .jpg, .jpeg" type="file" (change)="onImagesSelected($event)" multiple />
+    <div class="error-text mt8" *ngIf="form.controls.images.hasError('notSupportedFileType')">
+      Поддерживаемые типы файлов: .png, .jpg, .jpeg
+    </div>
+    <div class="gallery">
+      <img
+        *ngFor="let img of knife.images"
+        [src]="img | imgUrl"
+        class="gallery-img"
+        alt="Gallery image"
+      />
+    </div>
+  </label>
+
+  <h4 class="h4 mb16">Информация о ноже</h4>
+  <div formGroupName="knifeInfo">
+    <label class="tt-control-label mb16">
+      Общая длина (мм)
+      <input formControlName="overallLength" class="input tt-input" type="number" placeholder="Введите общую длину" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Длина лезвия (мм)
+      <input formControlName="bladeLength" class="input tt-input" type="number" placeholder="Введите длину лезвия" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Толщина рукоятки (мм)
+      <input formControlName="buttThickness" class="input tt-input" type="number" placeholder="Введите толщину рукоятки" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Вес (г)
+      <input formControlName="weight" class="input tt-input" type="number" placeholder="Введите вес" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Материал рукоятки
+      <input formControlName="handleMaterial" class="input tt-input" type="text" placeholder="Введите материал рукоятки" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Страна
+      <input formControlName="country" class="input tt-input" type="text" placeholder="Введите страну" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Производитель
+      <input formControlName="manufacturer" class="input tt-input" type="text" placeholder="Введите производителя" />
+    </label>
+
+    <label class="tt-control-label mb16">
+      Марка стали
+      <input formControlName="steelGrade" class="input tt-input" type="text" placeholder="Введите марку стали" />
+    </label>
+  </div>  
+  <button class="btn btn-shadow mb16" [class.inactive]="form.invalid" type="submit">Редактировать нож</button>
+</form>

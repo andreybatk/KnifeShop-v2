@@ -1,4 +1,45 @@
-.knife-card_wrapper {
+.catalog-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 32px;
+}
+
+.catalog-title {
+  font-size: 32px;
+  color: var(--light-color);
+  margin-bottom: 24px;
+}
+
+.catalog-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.knife-grid {
   display: grid;
-  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+.pagination button {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  padding: 8px 16px;
+  border: 1px solid var(--light-color);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.knife-wrapper{
+  margin-bottom: 24px;
 }

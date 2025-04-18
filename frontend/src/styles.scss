@@ -145,6 +145,62 @@ body {
   color:var(--light-color);
 }
 
+input[type="file"].tt-input {
+  padding: 10px;
+  background: var(--dark-color);
+  color: var(--light-color);
+  border: 1px dashed var(--light-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="file"].tt-input:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+input[type="file"].tt-input::file-selector-button {
+  background: var(--primary-color);
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+input[type="file"].tt-input::file-selector-button:hover {
+  background: var(--primary-light-color);
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color); /* modern browsers */
+  cursor: pointer;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-eye-btn {
+  position: absolute;
+  top:50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #FFFFFFBF;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.password-eye-btn.active {
+  color: var(--primary-color);
+}
+
 .error-text {
   color:var(--red-color);
 }

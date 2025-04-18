@@ -14,9 +14,9 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class KnifePageComponent implements OnInit {
   route = inject(ActivatedRoute)
+  router = inject(Router)
   authService = inject(AuthService);
   knifeService = inject(KnifeService)
-  router = inject(Router)
 
   knife:Knife | null = null;
   baseApiUrl = 'http://localhost:5000';
@@ -44,9 +44,5 @@ export class KnifePageComponent implements OnInit {
 
   onClickEdit() {
     this.router.navigate([`edit-knife/${this.id}`])
-  }
-
-  get isAdmin(): boolean {
-    return this.authService.hasRole('Admin');
   }
 }

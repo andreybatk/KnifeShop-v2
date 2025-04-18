@@ -7,27 +7,27 @@
       <p class="knife-category">Категория: {{ knife.category }}</p>
       <p class="knife-price">Цена: {{ knife.price }} &#8381;</p>
       <p class="knife-sale" *ngIf="!knife.isOnSale">Отсутствует в продаже.</p>
-      <div *ngIf="isAdmin" class="admin-btns">
+      <div *ngIf="authService.isAdmin" class="admin-btns">
         <button class="btn" (click) = "onClickEdit()">Редактировать</button>
-      </div>
-
-      <div *ngIf="knife.knifeInfo" class="knife-specs">
-        <h3>Характеристики:</h3>
-        <ul>
-          <li>Общая длина: {{ knife.knifeInfo.overallLength }} мм</li>
-          <li>Длина клинка: {{ knife.knifeInfo.bladeLength }} мм</li>
-          <li>Толщина обуха: {{ knife.knifeInfo.buttThickness }} мм</li>
-          <li>Вес: {{ knife.knifeInfo.weight }} г</li>
-          <li>Материал рукояти: {{ knife.knifeInfo.handleMaterial }}</li>
-          <li>Сталь: {{ knife.knifeInfo.steelGrade }}</li>
-          <li>Производитель: {{ knife.knifeInfo.manufacturer }}</li>
-          <li>Страна: {{ knife.knifeInfo.country }}</li>
-        </ul>
       </div>
     </div>
   </div>
 
   <p class="knife-description">{{ knife.description }}</p>
+
+  <div *ngIf="knife.knifeInfo" class="knife-specs">
+    <h3>Характеристики:</h3>
+    <ul>
+      <li *ngIf="knife.knifeInfo.overallLength">Общая длина: {{ knife.knifeInfo.overallLength }} мм</li>
+      <li *ngIf="knife.knifeInfo.bladeLength">Длина клинка: {{ knife.knifeInfo.bladeLength }} мм</li>
+      <li *ngIf="knife.knifeInfo.buttThickness">Толщина обуха: {{ knife.knifeInfo.buttThickness }} мм</li>
+      <li *ngIf="knife.knifeInfo.weight">Вес: {{ knife.knifeInfo.weight }} г</li>
+      <li *ngIf="knife.knifeInfo.handleMaterial">Материал рукояти: {{ knife.knifeInfo.handleMaterial }}</li>
+      <li *ngIf="knife.knifeInfo.steelGrade">Сталь: {{ knife.knifeInfo.steelGrade }}</li>
+      <li *ngIf="knife.knifeInfo.manufacturer">Производитель: {{ knife.knifeInfo.manufacturer }}</li>
+      <li *ngIf="knife.knifeInfo.country">Страна: {{ knife.knifeInfo.country }}</li>
+    </ul>
+  </div>
 
   <div class="knife-gallery" *ngIf="knife.images?.length">
     <h4>Галерея:</h4>
@@ -45,4 +45,5 @@
   <div class="popup" *ngIf="selectedImage" (click)="closeImage()">
     <img [src]="selectedImage" alt="Full view" />
   </div>
+  
 </div>

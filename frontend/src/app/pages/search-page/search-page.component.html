@@ -1,6 +1,32 @@
-<h1>Search knifes</h1>
-@for(knife of knifesBriefly; track knife.id) {
-  <div class="knife-card__wrapper">
-      <app-knife-card [knife] = "knife"> </app-knife-card>
+<div class="catalog-container">
+  <h1 class="catalog-title">Ножи</h1>
+
+  <div class="catalog-controls">
+    <input type="text" placeholder="Поиск..." [(ngModel)]="search" (input)="onSearch()" class="input search-input" />
+    <select [(ngModel)]="sortItem" (change)="onSortChange()" class="input search-input">
+      <option value="title">Название</option>
+      <option value="date">Дате</option>
+      <option value="price">Цена</option>
+    </select>
+    <select [(ngModel)]="sortOrder" (change)="onSortChange()" class="input search-input">
+      <option value="asc">По возрастанию </option>
+      <option value="desc">По убыванию</option>
+    </select>
   </div>
-}
+
+  <div class="knife-grid">
+    @for (knife of knifesBriefly | paginate: paginationConfig;; track knife.id) {
+      <div class="knife-wrapper">
+        <app-knife-card [knife]="knife"></app-knife-card>
+      </div>
+    }
+  </div>
+
+  <pagination-controls
+  class="pagination"
+  [id]="paginationConfig.id"
+  (pageChange)="onPageChange($event)"
+  [previousLabel]="paginationConfig.previousLabel"
+  [nextLabel]="paginationConfig.nextLabel">
+  </pagination-controls>
+</div>

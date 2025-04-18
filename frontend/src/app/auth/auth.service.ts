@@ -47,7 +47,6 @@ export class AuthService {
       `${this.baseApiUrl}register`,
       payload).pipe(
         catchError(error => {
-          console.log('Full error object from auth service', error)
           return throwError(() => new Error(error));
         })
       )}
@@ -105,6 +104,10 @@ export class AuthService {
     }
   }
   
+  get isAdmin(): boolean {
+    return this.hasRole('Admin');
+  }
+
   hasRole(role: string): boolean {
     return this.userRoles.includes(role);
   }

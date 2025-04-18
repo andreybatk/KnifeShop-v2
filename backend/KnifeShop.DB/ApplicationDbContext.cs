@@ -9,7 +9,7 @@ namespace KnifeShop.DB
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            // Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -21,7 +21,7 @@ namespace KnifeShop.DB
         {
             modelBuilder.Entity<Knife>(entity =>
             {
-                entity.HasOne(k => k.KnifesInfo)
+                entity.HasOne(k => k.KnifeInfo)
                     .WithOne()
                     .HasForeignKey<KnifeInfo>(ki => ki.Id);
 

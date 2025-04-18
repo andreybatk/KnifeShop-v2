@@ -14,7 +14,7 @@ namespace KnifeShop.DB.Repositories
         /// Edit Knife
         /// </summary>
         /// <returns>Edited Knife</returns>
-        Task<Knife?> Edit(long id, string title, string category, string description, string? image, List<string>? images, double price, bool isOnSale,
+        Task<long> Edit(long id, string title, string category, string description, string? image, List<string>? images, double price, bool isOnSale,
             double? overallLength, double? bladeLength, double? buttThickness, double? weight, string? handleMaterial, string? country, string? manufacturer, string? steelGrade);
         /// <summary>
         /// Get Knife
