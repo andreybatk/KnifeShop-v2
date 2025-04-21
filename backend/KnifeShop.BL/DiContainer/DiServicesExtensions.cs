@@ -1,4 +1,5 @@
-﻿using KnifeShop.BL.Services;
+﻿using KnifeShop.BL.Services.Auth;
+using KnifeShop.BL.Services.File;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KnifeShop.BL.DiContainer

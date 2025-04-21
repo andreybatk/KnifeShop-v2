@@ -1,6 +1,6 @@
 ﻿using KnifeShop.DB.Models;
 
-namespace KnifeShop.DB.Repositories
+namespace KnifeShop.DB.Repositories.Knifes
 {
     public interface IKnifeRepository
     {

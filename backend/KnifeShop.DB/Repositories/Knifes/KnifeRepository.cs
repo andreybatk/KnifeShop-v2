@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace KnifeShop.DB.Repositories
+namespace KnifeShop.DB.Repositories.Knifes
 {
     public class KnifeRepository : IKnifeRepository
     {
@@ -29,14 +29,14 @@ namespace KnifeShop.DB.Repositories
             return knife.Id;
         }
 
-        public async Task<long> Edit(long id, string title, string category, string description, string? image, List<string>? images, double price, bool isOnSale,
+        public async Task<long> Edit(long knifeId, string title, string category, string description, string? image, List<string>? images, double price, bool isOnSale,
             double? overallLength, double? bladeLength, double? buttThickness, double? weight, string? handleMaterial, string? country, string? manufacturer, string? steelGrade)
         {
             var knife = await _context.Knifes
                 .Include(k => k.KnifeInfo)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == knifeId);
 
-            if(knife is not null)
+            if (knife is not null)
             {
                 knife.Title = title;
                 knife.Category = category;
@@ -47,17 +47,24 @@ namespace KnifeShop.DB.Repositories
                 if (image is not null) { knife.Image = image; }
                 if (images is not null) { knife.Images = images; }
 
-                knife.KnifeInfo.OverallLength = overallLength;
-                knife.KnifeInfo.BladeLength = bladeLength;
-                knife.KnifeInfo.ButtThickness = buttThickness;
-                knife.KnifeInfo.Weight = weight;
-                knife.KnifeInfo.HandleMaterial = handleMaterial;
-                knife.KnifeInfo.Country = country;
-                knife.KnifeInfo.Manufacturer = manufacturer;
-                knife.KnifeInfo.SteelGrade = steelGrade;
+                if (knife.KnifeInfo is not null)
+                {
+                    knife.KnifeInfo.OverallLength = overallLength;
+                    knife.KnifeInfo.BladeLength = bladeLength;
+                    knife.KnifeInfo.ButtThickness = buttThickness;
+                    knife.KnifeInfo.Weight = weight;
+                    knife.KnifeInfo.HandleMaterial = handleMaterial;
+                    knife.KnifeInfo.Country = country;
+                    knife.KnifeInfo.Manufacturer = manufacturer;
+                    knife.KnifeInfo.SteelGrade = steelGrade;
+                }
+                else
+                {
+                    knife.KnifeInfo = new KnifeInfo(overallLength, bladeLength, buttThickness, weight, handleMaterial, country, manufacturer, steelGrade);
+                }
 
                 await _context.SaveChangesAsync();
-                return id;
+                return knifeId;
             }
 
             return 0;
@@ -115,25 +122,25 @@ namespace KnifeShop.DB.Repositories
             return await notesQuery.ToListAsync();
         }
 
-        public async Task<Knife?> Get(long id)
+        public async Task<Knife?> Get(long knifeId)
         {
             return await _context.Knifes
                 .Include(k => k.KnifeInfo)
-                .FirstOrDefaultAsync(k => k.Id == id);
+                .FirstOrDefaultAsync(k => k.Id == knifeId);
         }
 
-        public async Task<long> Delete(long id)
+        public async Task<long> Delete(long knifeId)
         {
             var knife = await _context.Knifes
-                .Include(k => k.KnifeInfo) 
-                .FirstOrDefaultAsync(k => k.Id == id);
+                .Include(k => k.KnifeInfo)
+                .FirstOrDefaultAsync(k => k.Id == knifeId);
 
             if (knife is null)
-                return 0; 
+                return 0;
 
             _context.Knifes.Remove(knife);
             await _context.SaveChangesAsync();
-            return id;
+            return knifeId;
         }
     }
 }

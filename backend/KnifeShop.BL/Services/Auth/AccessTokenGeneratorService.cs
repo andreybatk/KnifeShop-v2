@@ -4,7 +4,7 @@ using KnifeShop.DB.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace KnifeShop.BL.Services
+namespace KnifeShop.BL.Services.Auth
 {
     public class AccessTokenGeneratorService
     {
@@ -23,10 +23,17 @@ namespace KnifeShop.BL.Services
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
+
+            if (user?.Email is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            }
+            if (user?.UserName is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            }
 
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)

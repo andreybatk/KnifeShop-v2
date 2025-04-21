@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateKnifeDto, EditKnifeDto, GetKnifesPaginationDto, Knife, KnifeBriefly, KnifeInfo, KnifesPaginated } from '../interfaces/knife.interface';
+import { CreateKnifeDto, EditKnifeDto, GetKnifesPaginationDto, Knife, KnifeBriefly, KnifesPaginated } from '../interfaces/knife.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +43,10 @@ export class KnifeService {
   createKnife(payload: CreateKnifeDto, image: File | null = null, images: File[]) {
     const formData = this.knifeAction(payload, image, images)
     return this.http.post(`${this.baseApiUrl}`, formData);
+  }
+
+  deleteKnife(id:number) {
+    return this.http.delete(`${this.baseApiUrl}/${id}`);
   }
 
   editKnife(payload: EditKnifeDto, image: File | null = null, images: File[]) {

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using KnifeShop.API.Contracts.Knife;
-using KnifeShop.BL.Services;
+using KnifeShop.BL.Services.File;
 using KnifeShop.DB.Models;
-using KnifeShop.DB.Repositories;
+using KnifeShop.DB.Repositories.Knifes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +30,8 @@ namespace KnifeShop.API.Controllers
         /// <remarks>
         /// Admin role required
         /// </remarks>
-        [HttpPost]
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromForm] CreateKnifeRequest request)
@@ -56,8 +56,8 @@ namespace KnifeShop.API.Controllers
         /// <remarks>
         /// Admin role required
         /// </remarks>
-        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Edit([FromRoute] long id, [FromForm] EditKnifeRequest request)
@@ -84,6 +84,7 @@ namespace KnifeShop.API.Controllers
             return BadRequest(ModelState);
         }
 
+        [AllowAnonymous]
         [HttpGet("paginated")]
         [ProducesResponseType(typeof(KnifesWithTotalCountResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -113,6 +114,7 @@ namespace KnifeShop.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet("on_sale")]
         [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetOnSale([FromQuery] GetKnifesRequest request)
@@ -133,6 +135,7 @@ namespace KnifeShop.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Knife), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -151,8 +154,8 @@ namespace KnifeShop.API.Controllers
         /// <remarks>
         /// Admin role required
         /// </remarks>
-        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] long id)

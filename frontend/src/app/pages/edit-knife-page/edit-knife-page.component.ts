@@ -96,4 +96,14 @@ export class EditKnifePageComponent implements OnInit {
       })
     }
   }
+
+  onClickDelete() {
+    const confirmed = window.confirm('Вы уверены, что хотите удалить нож?');
+    if (confirmed) {
+      //@ts-ignore
+      this.knifeService.deleteKnife(this.id).subscribe(id => {
+        this.router.navigate(['admin-panel']);
+      });
+    }
+  }
 }

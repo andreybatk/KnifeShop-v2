@@ -54,9 +54,9 @@ body {
   }
 }
 
-.btn.danger {
+.btn-danger {
   background: var(--red-color);
-
+  
   &:hover {
     background-color: var(--red-light-color);
   }
@@ -179,6 +179,21 @@ input[type="checkbox"] {
   height: 18px;
   accent-color: var(--primary-color); /* modern browsers */
   cursor: pointer;
+}
+
+.nav li {
+  list-style: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &.active {
+    font-weight: 800;
+    color: var(--primary-color);
+  }
+
+  &:hover {
+    background-color: var(--primary-light-color);
+  }
 }
 
 .password-input {

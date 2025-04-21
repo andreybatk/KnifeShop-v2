@@ -1,8 +1,8 @@
 ﻿using KnifeShop.BL.Models;
 using KnifeShop.DB.Models;
-using KnifeShop.DB.Repositories;
+using KnifeShop.DB.Repositories.Token;
 
-namespace KnifeShop.BL.Services
+namespace KnifeShop.BL.Services.Auth
 {
     public class AuthenticatorService
     {

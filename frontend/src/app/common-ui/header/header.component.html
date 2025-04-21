@@ -11,6 +11,7 @@
 
     <ul class="dropdown" *ngIf="isDropdownOpen">
       <li *ngIf="authService.isAdmin" routerLink="/admin-panel">Админ панель</li>
+      <li routerLink="/profile">Профиль</li>
       <li (click)="authService.logout()">Выйти</li>
     </ul>
   </div>

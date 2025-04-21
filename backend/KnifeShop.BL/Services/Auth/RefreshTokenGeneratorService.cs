@@ -1,6 +1,6 @@
 ﻿using KnifeShop.BL.Helpers;
 
-namespace KnifeShop.BL.Services
+namespace KnifeShop.BL.Services.Auth
 {
     public class RefreshTokenGeneratorService
     {

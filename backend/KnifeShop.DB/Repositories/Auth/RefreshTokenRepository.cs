@@ -1,7 +1,7 @@
 ﻿using KnifeShop.DB.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace KnifeShop.DB.Repositories
+namespace KnifeShop.DB.Repositories.Token
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {

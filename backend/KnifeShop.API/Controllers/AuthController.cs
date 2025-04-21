@@ -1,13 +1,12 @@
 ﻿using KnifeShop.API.Contracts.Auth;
 using KnifeShop.API.Contracts.Google;
 using KnifeShop.API.Validators;
-using KnifeShop.BL.Services;
+using KnifeShop.BL.Services.Auth;
 using KnifeShop.DB.Models;
-using KnifeShop.DB.Repositories;
+using KnifeShop.DB.Repositories.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -32,6 +31,7 @@ namespace KnifeShop.API.Controllers
             _authenticatorService = authenticatorService;
         }
 
+        [AllowAnonymous]
         [HttpPost("google-login")]
         [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
@@ -52,6 +52,7 @@ namespace KnifeShop.API.Controllers
             return Ok(new { email = payload?.Email });
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -75,6 +76,7 @@ namespace KnifeShop.API.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -110,6 +112,7 @@ namespace KnifeShop.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh")]
         [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -157,8 +160,8 @@ namespace KnifeShop.API.Controllers
         }
 
 
-        [HttpDelete("logout")]
         [Authorize]
+        [HttpDelete("logout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout()

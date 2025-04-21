@@ -1,4 +1,6 @@
-﻿using KnifeShop.DB.Repositories;
+﻿using KnifeShop.DB.Repositories.Knifes;
+using KnifeShop.DB.Repositories.Token;
+using KnifeShop.DB.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KnifeShop.DB.DiContainer
@@ -9,6 +11,7 @@ namespace KnifeShop.DB.DiContainer
         {
             services.AddScoped<IKnifeRepository, KnifeRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

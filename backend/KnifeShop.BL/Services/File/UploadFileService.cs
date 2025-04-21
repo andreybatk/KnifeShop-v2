@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace KnifeShop.BL.Services
+namespace KnifeShop.BL.Services.File
 {
     public class UploadFileService : IUploadFileService
     {

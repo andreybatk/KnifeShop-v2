@@ -10,6 +10,8 @@ import { CreateKnifePageComponent } from './pages/create-knife-page/create-knife
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { KnifePageComponent } from './pages/knife-page/knife-page.component';
 import { EditKnifePageComponent } from './pages/edit-knife-page/edit-knife-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { ProfileLayoutComponent } from './common-ui/profile-layout/profile-layout.component';
 
 export const routes: Routes = [
 
@@ -18,6 +20,10 @@ export const routes: Routes = [
   {path: 'knife/:id', component: KnifePageComponent},
   {path: 'login', component: LoginPageComponent, canActivate: [canActivateGuest]},
   {path: 'register', component: RegisterPageComponent, canActivate: [canActivateGuest]},
+  {path: '', component: ProfileLayoutComponent, children: [
+    {path: 'profile', component: ProfilePageComponent}
+    ], canActivate: [canActivateAuth]
+  },
   {path: '', component: AdminLayoutComponent, children: [
     {path: 'admin-panel', component: AdminPanelComponent},
     {path: 'create-knife', component: CreateKnifePageComponent},

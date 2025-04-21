@@ -40,21 +40,10 @@ namespace KnifeShop.API
                     In = ParameterLocation.Header,
                     Description = "JWT token. Example: {your token}"
                 });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
@@ -70,6 +59,7 @@ namespace KnifeShop.API
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.Events.OnRedirectToLogin = context =>
@@ -87,6 +77,7 @@ namespace KnifeShop.API
             builder.Services.AddRepositories();
             builder.Services.AddServices();
             builder.Services.AddValidators();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddCors(options =>
             {
