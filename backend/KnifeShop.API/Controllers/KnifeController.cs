@@ -2,10 +2,13 @@
 using FluentValidation.AspNetCore;
 using KnifeShop.API.Contracts.Knife;
 using KnifeShop.BL.Services.File;
+using KnifeShop.DB.Contracts;
 using KnifeShop.DB.Models;
 using KnifeShop.DB.Repositories.Knifes;
+using KnifeShop.DB.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace KnifeShop.API.Controllers
 {
@@ -14,14 +17,16 @@ namespace KnifeShop.API.Controllers
     public class KnifeController : ControllerBase
     {
         private readonly IKnifeRepository _knifeRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUploadFileService _fileService;
 
         private readonly IValidator<CreateKnifeRequest> _createKnifeValidator;
         private readonly IValidator<EditKnifeRequest> _editKnifeValidator;
 
-        public KnifeController(IKnifeRepository knifeRepository, IUploadFileService fileService, IValidator<CreateKnifeRequest> createKnifeValidator, IValidator<EditKnifeRequest> editKnifeValidator)
+        public KnifeController(IKnifeRepository knifeRepository, IUserRepository userRepository, IUploadFileService fileService, IValidator<CreateKnifeRequest> createKnifeValidator, IValidator<EditKnifeRequest> editKnifeValidator)
         {
             _knifeRepository = knifeRepository;
+            _userRepository = userRepository;
             _fileService = fileService;
             _createKnifeValidator = createKnifeValidator;
             _editKnifeValidator = editKnifeValidator;
@@ -84,30 +89,26 @@ namespace KnifeShop.API.Controllers
             return BadRequest(ModelState);
         }
 
-        [AllowAnonymous]
         [HttpGet("paginated")]
         [ProducesResponseType(typeof(KnifesWithTotalCountResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetPaginated([FromQuery] GetKnifesPaginationRequest request)
         {
+            var userIdString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            Guid.TryParse(userIdString, out var userId);
+
             var result = await _knifeRepository.GetPaginated(
                 request.Search,
                 request.SortItem,
                 request.SortOrder,
                 request.Page,
-                request.PageSize
+                request.PageSize,
+                userId
             );
-
-            var knifes = new List<GetKnifesResponse>(result.TotalCount);
-            
-            foreach( var item in result.Items )
-            {
-                knifes.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
-            }
 
             var response = new KnifesWithTotalCountResponse
             {
-                Knifes = knifes,
+                Knifes = result.Items,
                 TotalCount = result.TotalCount
             };
 

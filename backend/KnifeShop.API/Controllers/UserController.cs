@@ -1,4 +1,6 @@
 ﻿using KnifeShop.API.Contracts.Knife;
+using KnifeShop.API.Contracts.User;
+using KnifeShop.DB.Contracts;
 using KnifeShop.DB.Enums;
 using KnifeShop.DB.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -65,21 +67,20 @@ namespace KnifeShop.API.Controllers
         [HttpGet("favorite_knifes")]
         [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetFavoriteKnives()
+        public async Task<IActionResult> GetFavoriteKnives([FromQuery] GetFavoriteKnifesPaginated request)
         {
-            var userIdString = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            var userIdString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (!Guid.TryParse(userIdString, out var userId))
                 return BadRequest("Invalid user ID.");
 
-            var result = await _userRepository.GetFavoriteKnives(userId);
+            var result = await _userRepository.GetFavoriteKnives(userId, request.Page, request.PageSize);
 
-            var response = new List<GetKnifesResponse>(result.Count);
-
-            foreach (var item in result)
+            var response = new KnifesWithTotalCountResponse
             {
-                response.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
-            }
+                Knifes = result.Items,
+                TotalCount = result.TotalCount
+            };
 
             return Ok(response);
         }

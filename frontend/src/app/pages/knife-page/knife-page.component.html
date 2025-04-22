@@ -1,7 +1,7 @@
 <div *ngIf="knife" class="knife-card">
   <div class="top-section">
     <img [src]="knife.image | imgUrl" alt="{{ knife.title }}" (click)="openImage(knife.image)" class="knife-image" />
-
+    
     <div class="knife-details">
       <h2 class="knife-title">{{ knife.title }}</h2>
       <p class="knife-category">Категория: {{ knife.category }}</p>

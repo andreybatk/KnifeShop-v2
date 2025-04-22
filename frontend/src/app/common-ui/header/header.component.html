@@ -4,19 +4,31 @@
     <a routerLink="/search" routerLinkActive="active">Каталог</a>
   </nav>
 
-  <div class="user-info" *ngIf="authService.isAuth" (click)="toggleDropdown()">
-    <button class="user-info button">
-      {{ authService.username }}
-    </button>
+  <div class="right-side">
+    <div class="favorite">
+      <img src="assets/svg/heart.svg"
+        class="favorite-btn"
+        routerLink="/profile/favorite"
+        alt="Избранное"
+        width="24"
+        height="24"
+      />
+    </div>
 
-    <ul class="dropdown" *ngIf="isDropdownOpen">
-      <li *ngIf="authService.isAdmin" routerLink="/admin-panel">Админ панель</li>
-      <li routerLink="/profile">Профиль</li>
-      <li (click)="authService.logout()">Выйти</li>
-    </ul>
+    <div class="user-info" *ngIf="authService.isAuth" (click)="toggleDropdown()">
+      <button class="user-info button">
+        {{ authService.username }}
+      </button>
+  
+      <ul class="dropdown" *ngIf="isDropdownOpen">
+        <li *ngIf="authService.isAdmin" routerLink="/admin/admin-panel">Админ панель</li>
+        <li routerLink="/profile/my-profile">Профиль</li>
+        <li (click)="authService.logout()">Выйти</li>
+      </ul>
+    </div>
+    <nav *ngIf="!authService.isAuth" routerLink="/login" class="login-btn">
+      Вход
+    </nav>
   </div>
 
-  <nav *ngIf="!authService.isAuth" routerLink="/login" class="login-btn">
-    Вход
-  </nav>
 </header>

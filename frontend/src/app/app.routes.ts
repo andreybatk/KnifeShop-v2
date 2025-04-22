@@ -6,12 +6,13 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 import { AdminLayoutComponent } from './common-ui/admin-layout/admin-layout.component';
-import { CreateKnifePageComponent } from './pages/create-knife-page/create-knife-page.component';
-import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { CreateKnifePageComponent } from './pages/admin/create-knife-page/create-knife-page.component';
+import { AdminPanelComponent } from './pages/admin/admin-panel/admin-panel.component';
 import { KnifePageComponent } from './pages/knife-page/knife-page.component';
-import { EditKnifePageComponent } from './pages/edit-knife-page/edit-knife-page.component';
-import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { EditKnifePageComponent } from './pages/admin/edit-knife-page/edit-knife-page.component';
+import { ProfilePageComponent } from './pages/profile/profile-page/profile-page.component';
 import { ProfileLayoutComponent } from './common-ui/profile-layout/profile-layout.component';
+import { FavoritePageComponent } from './pages/profile/favorite-page/favorite-page.component';
 
 export const routes: Routes = [
 
@@ -20,11 +21,12 @@ export const routes: Routes = [
   {path: 'knife/:id', component: KnifePageComponent},
   {path: 'login', component: LoginPageComponent, canActivate: [canActivateGuest]},
   {path: 'register', component: RegisterPageComponent, canActivate: [canActivateGuest]},
-  {path: '', component: ProfileLayoutComponent, children: [
-    {path: 'profile', component: ProfilePageComponent}
+  {path: 'profile', component: ProfileLayoutComponent, children: [
+    {path: 'my-profile', component: ProfilePageComponent},
+    {path: 'favorite', component: FavoritePageComponent}
     ], canActivate: [canActivateAuth]
   },
-  {path: '', component: AdminLayoutComponent, children: [
+  {path: 'admin', component: AdminLayoutComponent, children: [
     {path: 'admin-panel', component: AdminPanelComponent},
     {path: 'create-knife', component: CreateKnifePageComponent},
     {path: 'edit-knife/:id', component: EditKnifePageComponent},

@@ -1,4 +1,4 @@
-﻿namespace KnifeShop.API.Contracts.Knife
+﻿namespace KnifeShop.DB.Contracts
 {
     public class GetKnifesResponse
     {
@@ -8,5 +8,7 @@
         public string? Image { get; set; }
         public double Price { get; set; }
         public bool IsOnSale { get; set; }
+
+        public bool IsFavorite { get; set; } = false;
     }
 }

@@ -4,18 +4,18 @@
   justify-content: space-between;
   border: 1px solid;
   border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
   max-width: 320px;
   margin: 2%;
-
+  position: relative;
+  
   &:hover {
     transform: translateY(-4px);
   }
 
-  .avarar-name {
+  .knife-card-main {
     display: flex;
     align-items: center;
     margin-bottom: 16px;
@@ -39,5 +39,23 @@
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 12px;
+  }
+
+  .favorite {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    
+    .favorite-btn {
+      filter: invert(1) sepia(1) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%);
+      
+      &.active {
+        filter: invert(28%) sepia(100%) saturate(2100%) hue-rotate(1deg) brightness(100%) contrast(102%);
+      }
+    
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 }

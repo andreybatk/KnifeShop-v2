@@ -43,6 +43,6 @@ export class KnifePageComponent implements OnInit {
   }
 
   onClickEdit() {
-    this.router.navigate([`edit-knife/${this.id}`])
+    this.router.navigate([`admin/edit-knife/${this.id}`])
   }
 }

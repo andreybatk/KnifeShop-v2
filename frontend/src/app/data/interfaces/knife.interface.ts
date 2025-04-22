@@ -31,6 +31,7 @@ export interface KnifeBriefly {
   image: string | null,
   price: number,
   isOnSale: boolean,
+  isFavorite: boolean
 }
 
 export interface KnifesPaginated {

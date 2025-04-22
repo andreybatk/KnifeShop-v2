@@ -1,4 +1,5 @@
-﻿using KnifeShop.DB.Models;
+﻿using KnifeShop.DB.Contracts;
+using KnifeShop.DB.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -70,9 +71,9 @@ namespace KnifeShop.DB.Repositories.Knifes
             return 0;
         }
 
-        public async Task<(List<Knife> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page = 1, int pageSize = 10)
+        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId)
         {
-            var notesQuery = _context.Knifes
+            var query = _context.Knifes
                 .Include(k => k.KnifeInfo)
                 .Where(n => string.IsNullOrWhiteSpace(search) ||
                             n.Title.ToLower().Contains(search.ToLower()));
@@ -85,15 +86,25 @@ namespace KnifeShop.DB.Repositories.Knifes
                 _ => note => note.Id
             };
 
-            notesQuery = order == "desc"
-                ? notesQuery.OrderByDescending(selectorKey)
-                : notesQuery.OrderBy(selectorKey);
+            query = order == "desc"
+                ? query.OrderByDescending(selectorKey)
+                : query.OrderBy(selectorKey);
 
-            int totalCount = await notesQuery.CountAsync();
+            int totalCount = await query.CountAsync();
 
-            var items = await notesQuery
+            var items = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Select(k => new GetKnifesResponse
+                {
+                    Id = k.Id,
+                    Title = k.Title,
+                    Category = k.Category,
+                    Image = k.Image,
+                    Price = k.Price,
+                    IsOnSale = k.IsOnSale,
+                    IsFavorite = userId.HasValue && k.FavoriteKnifes.Any(f => f.UserId == userId)
+                })
                 .ToListAsync();
 
             return (items, totalCount);

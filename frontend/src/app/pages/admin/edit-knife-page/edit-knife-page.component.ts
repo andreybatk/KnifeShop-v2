@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { KnifeService } from '../../data/services/knife.service';
-import { Knife } from '../../data/interfaces/knife.interface';
-import { FileValidationService } from '../../data/services/file-validation.service';
+import { KnifeService } from '../../../data/services/knife.service';
+import { Knife } from '../../../data/interfaces/knife.interface';
+import { FileValidationService } from '../../../data/services/file-validation.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
+import { ImgUrlPipe } from '../../../helpers/pipes/img-url.pipe';
 
 @Component({
   selector: 'app-edit-knife-page',

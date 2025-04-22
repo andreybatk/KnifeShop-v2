@@ -15,7 +15,7 @@
   </div>
 
   <div class="knife-grid">
-    @for (knife of knifesBriefly | paginate: paginationConfig;; track knife.id) {
+    @for (knife of knifesBriefly | paginate: paginationConfig; track knife.id) {
       <div class="knife-wrapper">
         <app-knife-card [knife]="knife"></app-knife-card>
       </div>

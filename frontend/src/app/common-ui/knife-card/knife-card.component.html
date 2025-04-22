@@ -1,19 +1,29 @@
-@if(knife)
-{
-    <div class="knife-card" (click) = "onClickCard()">
-        <div class="avarar-name">
-            <img [src] = "knife.image | imgUrl" alt="" class="knife-card__avatar">
+@if(knife) {
+  <div class="knife-card" (click)="onClickCard()">
+    <div class="knife-card-main">
+      <img [src]="knife.image | imgUrl" alt="" class="knife-card__avatar">
 
-            <div class="knife-card__name">
-                <strong class="h6">{{knife.title}}</strong>
-                <span class="subtitle">{{knife.category}}</span>
-            </div>
-        </div>
-
-        <div class="knife-card__price">
-            {{knife.price}} &#8381;
-        </div>
-
-        <button class="btn">Подробнее</button>
+      <div class="knife-card__name">
+        <strong class="h6">{{knife.title}}</strong>
+        <span class="subtitle">{{knife.category}}</span>
+      </div>
+      
+      <div class="favorite">
+        <img src="assets/svg/heart.svg"
+          class="favorite-btn" 
+          (click)="toggleFavorite($event)"
+          [class.active]="knife.isFavorite" 
+          alt="Избранное" 
+          width="24" 
+          height="24"
+        />
+      </div>
     </div>
+
+    <div class="knife-card__price">
+      {{knife.price}} &#8381;
+    </div>
+
+    <button class="btn">Подробнее</button>
+  </div>
 }

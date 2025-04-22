@@ -1,4 +1,5 @@
-﻿using KnifeShop.DB.Models;
+﻿using KnifeShop.DB.Contracts;
+using KnifeShop.DB.Models;
 
 namespace KnifeShop.DB.Repositories.Knifes
 {
@@ -30,7 +31,7 @@ namespace KnifeShop.DB.Repositories.Knifes
         /// Get Knifes with Pagination
         /// </summary>
         /// <returns>List<Knife>; Total Count elements</returns>
-        Task<(List<Knife> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize);
+        Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId);
         /// <summary>
         /// Delete
         /// </summary>

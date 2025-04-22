@@ -1,26 +1,8 @@
-.catalog-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 32px;
-}
-
-.catalog-title {
-  font-size: 32px;
-  color: var(--light-color);
-  margin-bottom: 24px;
-}
-
-.catalog-controls {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
 .knife-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
+  padding: 12px;
 }
 
 .knife-wrapper{

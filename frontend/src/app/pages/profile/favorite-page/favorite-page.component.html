@@ -1,0 +1,17 @@
+<div class="favorite-page">
+  <div class="knife-grid">
+    @for (knife of knifesBriefly | paginate: paginationConfig; track knife.id) {
+      <div class="knife-wrapper">
+        <app-knife-card [knife]="knife"></app-knife-card>
+      </div>
+    }
+  </div>
+
+  <pagination-controls
+  class="pagination"
+  [id]="paginationConfig.id"
+  (pageChange)="onPageChange($event)"
+  [previousLabel]="paginationConfig.previousLabel"
+  [nextLabel]="paginationConfig.nextLabel">
+  </pagination-controls>
+</div>

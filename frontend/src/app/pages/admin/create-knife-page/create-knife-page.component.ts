@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { KnifeService } from '../../data/services/knife.service';
+import { KnifeService } from '../../../data/services/knife.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FileValidationService } from '../../data/services/file-validation.service';
+import { FileValidationService } from '../../../data/services/file-validation.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

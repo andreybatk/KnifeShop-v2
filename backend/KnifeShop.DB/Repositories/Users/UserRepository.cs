@@ -1,6 +1,6 @@
-﻿using KnifeShop.DB.Enums;
+﻿using KnifeShop.DB.Contracts;
+using KnifeShop.DB.Enums;
 using KnifeShop.DB.Models;
-using KnifeShop.DB.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace KnifeShop.DB.Repositories.Users
@@ -53,13 +53,32 @@ namespace KnifeShop.DB.Repositories.Users
             return AddFavoriteResult.Success;
         }
 
-        public async Task<List<Knife>> GetFavoriteKnives(Guid userId)
+        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetFavoriteKnives(Guid userId, int page = 1, int pageSize = 10)
         {
-            return await _context.FavoriteKnifes
-                .Where(fk => fk.UserId == userId)
+            var query = _context.FavoriteKnifes
+                .Where(fk => fk.UserId == userId && fk.Knife != null)
+                .OrderByDescending(fk => fk.AddedAt)
                 .Include(fk => fk.Knife)
-                .Select(fk => fk.Knife!)
-                .ToListAsync();
+                .Select(fk => fk.Knife!);
+
+            int totalCount = await query.CountAsync();
+
+            var items = await query
+                 .Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .Select(k => new GetKnifesResponse
+                 {
+                     Id = k.Id,
+                     Title = k.Title,
+                     Category = k.Category,
+                     Image = k.Image,
+                     Price = k.Price,
+                     IsOnSale = k.IsOnSale,
+                     IsFavorite = k.FavoriteKnifes.Any(f => f.UserId == userId)
+                 })
+                 .ToListAsync();
+
+            return (items, totalCount);
         }
     }
 }
