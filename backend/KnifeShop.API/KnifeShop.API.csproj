@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\KnifeShop.Contracts\KnifeShop.Contracts.csproj" />
+    <ProjectReference Include="..\KnifeShop.Contracts\KnifeShop.Contracts.csproj" />
     <ProjectReference Include="..\KnifeShop.BL\KnifeShop.BL.csproj" />
     <ProjectReference Include="..\KnifeShop.DB\KnifeShop.DB.csproj" />
   </ItemGroup>

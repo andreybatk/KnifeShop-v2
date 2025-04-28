@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnifeShop.BL", "KnifeShop.B
 		{7D864AE6-42F2-4E1B-8DA2-6BEB572AA8F0} = {7D864AE6-42F2-4E1B-8DA2-6BEB572AA8F0}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnifeShop.Contracts", "..\KnifeShop.Contracts\KnifeShop.Contracts.csproj", "{2FF358F2-7763-406D-ACF0-273A2F7221E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnifeShop.Contracts", "KnifeShop.Contracts\KnifeShop.Contracts.csproj", "{2FF358F2-7763-406D-ACF0-273A2F7221E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
