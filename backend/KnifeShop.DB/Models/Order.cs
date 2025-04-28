@@ -11,6 +11,6 @@
         public bool IsShipped { get; set; }
         public bool IsDelivered { get; set; }
 
-        public List<OrderItem> Items { get; set; } = new();
+        public List<OrderItem> Items { get; set; } = [];
     }
 }

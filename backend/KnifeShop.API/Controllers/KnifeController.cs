@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using KnifeShop.API.Contracts.Knife;
 using KnifeShop.BL.Services.File;
-using KnifeShop.DB.Contracts;
-using KnifeShop.DB.Models;
+using KnifeShop.Contracts.Knife;
 using KnifeShop.DB.Repositories.Knifes;
 using KnifeShop.DB.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -17,25 +15,23 @@ namespace KnifeShop.API.Controllers
     public class KnifeController : ControllerBase
     {
         private readonly IKnifeRepository _knifeRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IUploadFileService _fileService;
 
         private readonly IValidator<CreateKnifeRequest> _createKnifeValidator;
         private readonly IValidator<EditKnifeRequest> _editKnifeValidator;
 
-        public KnifeController(IKnifeRepository knifeRepository, IUserRepository userRepository, IUploadFileService fileService, IValidator<CreateKnifeRequest> createKnifeValidator, IValidator<EditKnifeRequest> editKnifeValidator)
+        public KnifeController(IKnifeRepository knifeRepository, IUploadFileService fileService, IValidator<CreateKnifeRequest> createKnifeValidator, IValidator<EditKnifeRequest> editKnifeValidator)
         {
             _knifeRepository = knifeRepository;
-            _userRepository = userRepository;
             _fileService = fileService;
             _createKnifeValidator = createKnifeValidator;
             _editKnifeValidator = editKnifeValidator;
         }
 
         /// <remarks>
-        /// Admin role required
+        /// Manager role required
         /// </remarks>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -48,10 +44,10 @@ namespace KnifeShop.API.Controllers
                 var imagePath = await _fileService.UploadImage(request.Image);
                 var imagesPath = await _fileService.UploadImages(request.Images);
 
-                var id = await _knifeRepository.Create(request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
+                var resultId = await _knifeRepository.Create(request.Title, request.CategoryIds, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
                     request?.KnifeInfo?.OverallLength ?? null, request?.KnifeInfo?.BladeLength ?? null, request?.KnifeInfo?.ButtThickness ?? null, request?.KnifeInfo?.Weight ?? null, request?.KnifeInfo?.HandleMaterial ?? null, request?.KnifeInfo?.Country ?? null, request?.KnifeInfo?.Manufacturer ?? null, request?.KnifeInfo?.SteelGrade ?? null);
 
-                return Ok(id);
+                return Ok(resultId);
             }
 
             validationResult.AddToModelState(ModelState);
@@ -59,9 +55,9 @@ namespace KnifeShop.API.Controllers
         }
 
         /// <remarks>
-        /// Admin role required
+        /// Manager role required
         /// </remarks>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -74,7 +70,7 @@ namespace KnifeShop.API.Controllers
                 var imagePath = await _fileService.UploadImage(request.Image);
                 var imagesPath = await _fileService.UploadImages(request.Images);
 
-                var resultId = await _knifeRepository.Edit(id, request.Title, request.Category, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
+                var resultId = await _knifeRepository.Edit(id, request.Title, request.CategoryIds, request.Description, imagePath, imagesPath, request.Price, request.IsOnSale,
                      request?.KnifeInfo?.OverallLength ?? null, request?.KnifeInfo?.BladeLength ?? null, request?.KnifeInfo?.ButtThickness ?? null, request?.KnifeInfo?.Weight ?? null, request?.KnifeInfo?.HandleMaterial ?? null, request?.KnifeInfo?.Country ?? null, request?.KnifeInfo?.Manufacturer ?? null, request?.KnifeInfo?.SteelGrade ?? null);
 
                 if (resultId == 0)
@@ -97,25 +93,25 @@ namespace KnifeShop.API.Controllers
             var userIdString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             Guid.TryParse(userIdString, out var userId);
 
-            var result = await _knifeRepository.GetPaginated(
+            var (Items, TotalCount) = await _knifeRepository.GetPaginated(
                 request.Search,
                 request.SortItem,
                 request.SortOrder,
                 request.Page,
                 request.PageSize,
-                userId
+                userId,
+                request.CategoryIds
             );
 
             var response = new KnifesWithTotalCountResponse
             {
-                Knifes = result.Items,
-                TotalCount = result.TotalCount
+                Knifes = Items,
+                TotalCount = TotalCount
             };
 
             return Ok(response);
         }
 
-        [AllowAnonymous]
         [HttpGet("on_sale")]
         [ProducesResponseType(typeof(List<GetKnifesResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetOnSale([FromQuery] GetKnifesRequest request)
@@ -126,23 +122,18 @@ namespace KnifeShop.API.Controllers
                 request.SortOrder
             );
 
-            var response = new List<GetKnifesResponse>(result.Count);
-
-            foreach (var item in result)
-            {
-                response.Add(new GetKnifesResponse { Id = item.Id, Title = item.Title, Category = item.Category, Image = item.Image, Price = item.Price, IsOnSale = item.IsOnSale });
-            }
-
-            return Ok(response);
+            return Ok(result);
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Knife), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetKnifeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get([FromRoute] long id)
         {
-            var result = await _knifeRepository.Get(id);
+            var userIdString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            Guid.TryParse(userIdString, out var userId);
+
+            var result = await _knifeRepository.Get(id, userId);
 
             if(result is null)
             {
@@ -153,9 +144,9 @@ namespace KnifeShop.API.Controllers
         }
 
         /// <remarks>
-        /// Admin role required
+        /// Manager role required
         /// </remarks>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

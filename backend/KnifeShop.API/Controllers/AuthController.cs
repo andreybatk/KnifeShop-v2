@@ -1,7 +1,7 @@
-﻿using KnifeShop.API.Contracts.Auth;
-using KnifeShop.API.Contracts.Google;
-using KnifeShop.API.Validators;
+﻿using KnifeShop.API.Validators;
 using KnifeShop.BL.Services.Auth;
+using KnifeShop.Contracts.Auth;
+using KnifeShop.Contracts.Google;
 using KnifeShop.DB.Models;
 using KnifeShop.DB.Repositories.Token;
 using Microsoft.AspNetCore.Authorization;

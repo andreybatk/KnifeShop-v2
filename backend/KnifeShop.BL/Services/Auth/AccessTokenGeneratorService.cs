@@ -35,11 +35,14 @@ namespace KnifeShop.BL.Services.Auth
                 claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if(user is not null)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-                claims.Add(new Claim("role", role));
+                var roles = await _userManager.GetRolesAsync(user);
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    claims.Add(new Claim("role", role)); // custom ClaimType "role" for frontend
+                }
             }
 
             DateTime expirationTime = DateTime.UtcNow.AddMinutes(_configuration.AccessTokenExpirationMinutes);

@@ -1,0 +1,31 @@
+<form
+  class="edit-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h3 class="h3 mb60">Изменение категорий ножей</h3>
+
+  <label class="tt-control-label mb16">
+    Название категории
+    <input formControlName="name" class="input tt-input" type="text" placeholder="Введите название категории">
+  </label>
+
+  <button class="btn btn-shadow mb16" [class.inactive]="form.invalid" type="submit">
+    Добавить категорию
+  </button>
+
+  <div class="error-text mt16" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+</form>
+
+<div class="categories-list mt40">
+  <h4 class="h4 mb20">Текущие категории:</h4>
+
+  <div *ngFor="let category of categories" class="category-item mb16">
+    <span>{{ category.name }}</span>
+    <button class="btn btn-small btn-danger ml16" (click)="onDeleteCategory(category.id)">
+      Удалить
+    </button>
+  </div>
+</div>

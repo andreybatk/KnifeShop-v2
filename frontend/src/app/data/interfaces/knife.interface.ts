@@ -1,14 +1,18 @@
+import { Category } from "./category.interface";
+
 export interface Knife {
   id: number,
   title: string,
-  category: string,
+  categories: Category[],
   description: string | null,
   image: string | null,
   images: string[] | null,
   price: number,
   isOnSale: boolean,
   createdAt: Date,
-  knifeInfo: KnifeInfo
+  knifeInfo: KnifeInfo,
+
+  isFavorite: boolean
 }
 
 export interface KnifeInfo {
@@ -27,10 +31,11 @@ export interface KnifeInfo {
 export interface KnifeBriefly {
   id: number,
   title: string,
-  category: string,
+  categories: Category[],
   image: string | null,
   price: number,
   isOnSale: boolean,
+
   isFavorite: boolean
 }
 
@@ -41,7 +46,7 @@ export interface KnifesPaginated {
 
 export interface CreateKnifeDto {
   title: string,
-  category: string,
+  categoryIds: number[],
   description: string | null,
   price: number,
   isOnSale: boolean,
@@ -51,7 +56,7 @@ export interface CreateKnifeDto {
 export interface EditKnifeDto {
   id: number,
   title: string,
-  category: string,
+  categoryIds: number[],
   description: string | null,
   price: number,
   isOnSale: boolean,
@@ -64,4 +69,5 @@ export interface GetKnifesPaginationDto {
   sortOrder: 'asc' | 'desc' | null;
   page: number | null;
   pageSize: number | null;
+  categoryIds: number[] | null,
 }

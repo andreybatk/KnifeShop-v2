@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 import { AuthService } from '../../auth/auth.service';
+import { FavoriteService } from '../../data/services/favorite.service';
 
 @Component({
   selector: 'app-knife-page',
@@ -17,6 +18,7 @@ export class KnifePageComponent implements OnInit {
   router = inject(Router)
   authService = inject(AuthService);
   knifeService = inject(KnifeService)
+  favoriteService = inject(FavoriteService)
 
   knife:Knife | null = null;
   baseApiUrl = 'http://localhost:5000';
@@ -44,5 +46,16 @@ export class KnifePageComponent implements OnInit {
 
   onClickEdit() {
     this.router.navigate([`admin/edit-knife/${this.id}`])
+  }
+
+  toggleFavorite(event: MouseEvent) {
+    event.stopPropagation();
+    
+    if (!this.knife?.id) return;
+  
+    this.favoriteService.toggleFavorite(this.knife.id, this.knife.isFavorite)
+      .subscribe((newValue: boolean) => {
+        this.knife!.isFavorite = newValue;
+      });
   }
 }

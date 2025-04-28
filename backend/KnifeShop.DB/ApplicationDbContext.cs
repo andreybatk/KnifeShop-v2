@@ -19,6 +19,8 @@ namespace KnifeShop.DB
         public DbSet<FavoriteKnife> FavoriteKnifes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<KnifeCategory> KnifeCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,7 +31,8 @@ namespace KnifeShop.DB
             modelBuilder.Entity<Knife>().
                 HasOne(k => k.KnifeInfo)
                 .WithOne()
-                .HasForeignKey<KnifeInfo>(ki => ki.Id);
+                .HasForeignKey<KnifeInfo>(ki => ki.Id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<KnifeInfo>().HasKey(k => k.Id);
 
@@ -68,6 +71,21 @@ namespace KnifeShop.DB
 
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => oi.Id);
+
+            modelBuilder.Entity<KnifeCategory>()
+                .HasKey(kc => new { kc.KnifeId, kc.CategoryId });
+
+            modelBuilder.Entity<KnifeCategory>()
+                .HasOne(kc => kc.Knife)
+                .WithMany(k => k.KnifeCategories)
+                .HasForeignKey(kc => kc.KnifeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<KnifeCategory>()
+                .HasOne(kc => kc.Category)
+                .WithMany(c => c.KnifeCategories)
+                .HasForeignKey(kc => kc.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

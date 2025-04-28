@@ -12,7 +12,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class HeaderComponent {
   authService = inject(AuthService)
   eRef:ElementRef = inject(ElementRef);
-  showLogout = false;
   isDropdownOpen = false;
 
   toggleDropdown() {
@@ -24,9 +23,5 @@ export class HeaderComponent {
     if (!this.eRef.nativeElement.contains(event.target)) {
       this.isDropdownOpen = false;
     }
-  }
-
-  toggleLogout(): void {
-    this.showLogout = !this.showLogout;
   }
 }

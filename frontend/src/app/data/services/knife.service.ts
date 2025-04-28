@@ -58,12 +58,15 @@ export class KnifeService {
     const formData = new FormData()
     
     formData.append('title', payload.title)
-    formData.append('category', payload.category)
+    
+    payload.categoryIds.forEach(id => {
+        formData.append('categoryIds', id.toString());
+    })
+   
     formData.append('price', payload.price.toString())
     formData.append('isOnSale', payload.isOnSale.toString())
 
-    if(payload.description)
-    {
+    if(payload.description) {
       formData.append('description', payload.description)
     }
 
@@ -71,8 +74,7 @@ export class KnifeService {
       formData.append('image', image, image.name);
     }
 
-    if(images)
-    {
+    if(images) {
       images.forEach((img) => {
         formData.append('images', img, img.name);
       })

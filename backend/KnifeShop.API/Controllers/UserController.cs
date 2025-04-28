@@ -1,6 +1,5 @@
-﻿using KnifeShop.API.Contracts.Knife;
-using KnifeShop.API.Contracts.User;
-using KnifeShop.DB.Contracts;
+﻿using KnifeShop.Contracts.Knife;
+using KnifeShop.Contracts.User;
 using KnifeShop.DB.Enums;
 using KnifeShop.DB.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -74,12 +73,12 @@ namespace KnifeShop.API.Controllers
             if (!Guid.TryParse(userIdString, out var userId))
                 return BadRequest("Invalid user ID.");
 
-            var result = await _userRepository.GetFavoriteKnives(userId, request.Page, request.PageSize);
+            var (Items, TotalCount) = await _userRepository.GetFavoriteKnives(userId, request.Page, request.PageSize);
 
             var response = new KnifesWithTotalCountResponse
             {
-                Knifes = result.Items,
-                TotalCount = result.TotalCount
+                Knifes = Items,
+                TotalCount = TotalCount
             };
 
             return Ok(response);

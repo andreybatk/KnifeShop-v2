@@ -1,0 +1,35 @@
+<form
+  class="edit-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h3 class="h3 mb60">Изменение ролей пользователя</h3>
+
+  <label class="tt-control-label mb16">
+    Email
+    <input formControlName = "email" class="input tt-input" type="text" placeholder="Введите email">
+    <div class="error-text mt8" *ngIf="form.controls.email.hasError('email') && form.controls.email.touched"> 
+      Поле "Email" не корректно. 
+    </div>
+    <div class="error-text mt8" *ngIf="errorMessage"> 
+      {{ errorMessage }}
+    </div>
+  </label>
+
+  <button class="btn btn-shadow mb16" [class.inactive] = "form.invalid" type="submit">Найти пользователя</button>
+</form>
+
+<div *ngIf="currentRoles" class="tt-control-label">
+  <h4 class="h4">Роли пользователя {{currentEmail}}</h4>
+  
+  <div *ngFor="let role of allRoles">
+    <label>
+      <input 
+        type="checkbox"
+        [checked]="currentRoles.includes(role)"
+        (change)="onRoleChange(role, $event)"
+      >
+      {{ role }}
+    </label>
+  </div>
+</div>

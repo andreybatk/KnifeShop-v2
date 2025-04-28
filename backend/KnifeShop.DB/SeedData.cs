@@ -6,11 +6,11 @@ namespace KnifeShop.DB
 {
     public static class SeedData
     {
+        public static string[] roleNames = { "Admin", "Manager" };
+
         public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-
-            string[] roleNames = { "Admin", "User" };
 
             foreach (var roleName in roleNames)
             {
@@ -39,7 +39,7 @@ namespace KnifeShop.DB
                 var result = await userManager.CreateAsync(user, adminPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRolesAsync(user, roleNames);
                 }
             }
         }

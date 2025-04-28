@@ -11,6 +11,7 @@
   --gray-color: #5F646D;
   --red-color: #96233f;
   --red-light-color: #cf3f63;
+  --red-contrast-color:#f10a0a;
   --green-color: #137a0f;
 }
 
@@ -53,6 +54,27 @@ body {
   &:hover {
     background-color: var(--primary-light-color);
   }
+}
+
+.icon-btn {
+  border: none;
+  background: none;
+  color:var(--light-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 0;
+  margin-bottom: 6px;
+
+  &:hover {
+    color:var(--primary-light-color);
+  }
+}
+
+.svg-icon {
+  position: relative;
 }
 
 .btn-danger {

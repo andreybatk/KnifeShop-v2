@@ -47,10 +47,10 @@
     right: 16px;
     
     .favorite-btn {
-      filter: invert(1) sepia(1) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%);
+      
       
       &.active {
-        filter: invert(28%) sepia(100%) saturate(2100%) hue-rotate(1deg) brightness(100%) contrast(102%);
+        color:var(--red-contrast-color)
       }
     
       &:hover {

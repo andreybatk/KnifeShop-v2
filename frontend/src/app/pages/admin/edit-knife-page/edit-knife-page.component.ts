@@ -6,6 +6,7 @@ import { FileValidationService } from '../../../data/services/file-validation.se
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ImgUrlPipe } from '../../../helpers/pipes/img-url.pipe';
+import { Category } from '../../../data/interfaces/category.interface';
 
 @Component({
   selector: 'app-edit-knife-page',
@@ -13,6 +14,7 @@ import { ImgUrlPipe } from '../../../helpers/pipes/img-url.pipe';
   templateUrl: './edit-knife-page.component.html',
   styleUrl: './edit-knife-page.component.scss'
 })
+
 export class EditKnifePageComponent implements OnInit {
   route = inject(ActivatedRoute)
   router = inject(Router)
@@ -31,7 +33,7 @@ export class EditKnifePageComponent implements OnInit {
         this.form.patchValue({
           id: knife.id,
           title: knife.title,
-          category: knife.category,
+          categoryIds: knife.categories.map(x => x.id),
           price: knife.price,
           description: knife.description,
           isOnSale: knife.isOnSale,
@@ -53,7 +55,7 @@ export class EditKnifePageComponent implements OnInit {
   form = new FormGroup({
     id: new FormControl<number | null>(null, Validators.required),
     title: new FormControl<string | null>(null, Validators.required),
-    category: new FormControl<string | null>(null, Validators.required),
+    categoryIds: new FormControl<number[]>([], Validators.required),
     price: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
     description: new FormControl<string | null>(null),
     isOnSale: new FormControl<boolean | null>(true),

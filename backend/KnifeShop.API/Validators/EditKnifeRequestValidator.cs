@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using KnifeShop.API.Contracts.Knife;
+using KnifeShop.Contracts.Knife;
 
 namespace KnifeShop.API.Validators
 {
@@ -10,7 +10,7 @@ namespace KnifeShop.API.Validators
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title cannot be empty.");
 
-            RuleFor(x => x.Category)
+            RuleFor(x => x.CategoryIds)
                 .NotEmpty().WithMessage("Category cannot be empty.");
 
             RuleFor(x => x.Price)

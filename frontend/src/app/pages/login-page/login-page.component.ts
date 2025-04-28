@@ -32,12 +32,16 @@ export class LoginPageComponent {
       .pipe(
         catchError(error => {
           this.errorMessage = 'Ошибка авторизации. Неправильный логин или пароль.';
-          return throwError(() => new Error(error));
+          return throwError(() => error);
         })
       )
-      .subscribe(res => {
-        this.router.navigate([''])
-      })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['']);
+        },
+        error: () => {
+        }
+      });
     }
   }
 

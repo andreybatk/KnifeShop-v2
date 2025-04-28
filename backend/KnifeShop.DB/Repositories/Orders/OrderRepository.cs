@@ -1,4 +1,4 @@
-﻿namespace KnifeShop.DB.Repositories.Order
+﻿namespace KnifeShop.DB.Repositories.Orders
 {
     public class OrderRepository
     {

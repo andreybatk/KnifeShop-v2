@@ -1,4 +1,5 @@
-﻿using KnifeShop.DB.Contracts;
+﻿using KnifeShop.Contracts.Category;
+using KnifeShop.Contracts.Knife;
 using KnifeShop.DB.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -14,15 +15,22 @@ namespace KnifeShop.DB.Repositories.Knifes
             _context = context;
         }
 
-        public async Task<long> Create(string title, string category, string? description, string? image, List<string>? images, double price, bool isOnSale,
+        public async Task<long> Create(string title, List<long> categoryIds, string? description, string? image, List<string>? images, double price, bool isOnSale,
             double? overallLength, double? bladeLength, double? buttThickness, double? weight, string? handleMaterial, string? country, string? manufacturer, string? steelGrade)
         {
             var knifeInfo = new KnifeInfo(overallLength, bladeLength, buttThickness, weight, handleMaterial, country, manufacturer, steelGrade);
             await _context.KnifesInfo.AddAsync(knifeInfo);
 
-            var dateNow = DateTime.UtcNow; // for Postgres
-            var knife = new Knife(title, category, description, image, images, price, isOnSale, dateNow);
+            var knife = new Knife(title, description, image, images, price, isOnSale);
             knife.KnifeInfo = knifeInfo;
+
+            var newKnifeCategories = categoryIds.Select(id => new KnifeCategory
+            {
+                KnifeId = knife.Id,
+                CategoryId = id
+            }).ToList();
+
+            knife.KnifeCategories = newKnifeCategories;
 
             await _context.Knifes.AddAsync(knife);
             await _context.SaveChangesAsync();
@@ -30,17 +38,17 @@ namespace KnifeShop.DB.Repositories.Knifes
             return knife.Id;
         }
 
-        public async Task<long> Edit(long knifeId, string title, string category, string description, string? image, List<string>? images, double price, bool isOnSale,
+        public async Task<long> Edit(long knifeId, string title, List<long> categoryIds, string description, string? image, List<string>? images, double price, bool isOnSale,
             double? overallLength, double? bladeLength, double? buttThickness, double? weight, string? handleMaterial, string? country, string? manufacturer, string? steelGrade)
         {
             var knife = await _context.Knifes
                 .Include(k => k.KnifeInfo)
-                .FirstOrDefaultAsync(x => x.Id == knifeId);
+                .Include(k => k.KnifeCategories)
+                .FirstOrDefaultAsync(k => k.Id == knifeId);
 
             if (knife is not null)
             {
                 knife.Title = title;
-                knife.Category = category;
                 knife.Description = description;
                 knife.Price = price;
                 knife.IsOnSale = isOnSale;
@@ -64,6 +72,14 @@ namespace KnifeShop.DB.Repositories.Knifes
                     knife.KnifeInfo = new KnifeInfo(overallLength, bladeLength, buttThickness, weight, handleMaterial, country, manufacturer, steelGrade);
                 }
 
+                var newKnifeCategories = categoryIds.Select(id => new KnifeCategory
+                {
+                    KnifeId = knifeId,
+                    CategoryId = id
+                }).ToList();
+
+                knife.KnifeCategories = newKnifeCategories;
+
                 await _context.SaveChangesAsync();
                 return knifeId;
             }
@@ -71,19 +87,23 @@ namespace KnifeShop.DB.Repositories.Knifes
             return 0;
         }
 
-        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId)
+        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId, List<long>? CategoryIds)
         {
             var query = _context.Knifes
                 .Include(k => k.KnifeInfo)
-                .Where(n => string.IsNullOrWhiteSpace(search) ||
-                            n.Title.ToLower().Contains(search.ToLower()));
+                .Include(k => k.KnifeCategories)
+                    .ThenInclude(kc => kc.Category)
+                .Where(k =>
+                    (string.IsNullOrWhiteSpace(search) || k.Title.ToLower().Contains(search.ToLower())) &&
+                    (CategoryIds == null || k.KnifeCategories.Any(kc => CategoryIds.Contains(kc.CategoryId)))
+                    );
 
             Expression<Func<Knife, object>> selectorKey = sortItem?.ToLower() switch
             {
-                "date" => note => note.CreatedAt,
-                "title" => note => note.Title,
-                "price" => note => note.Price,
-                _ => note => note.Id
+                "date" => knife => knife.CreatedAt,
+                "title" => knife => knife.Title,
+                "price" => knife => knife.Price,
+                _ => knife => knife.Id
             };
 
             query = order == "desc"
@@ -99,7 +119,10 @@ namespace KnifeShop.DB.Repositories.Knifes
                 {
                     Id = k.Id,
                     Title = k.Title,
-                    Category = k.Category,
+                    Categories = k.KnifeCategories
+                        .Where(kc => kc.Category != null)
+                        .Select(kc => new CategoryDto { Id = kc.CategoryId, Name = kc.Category!.Name })
+                        .ToList(),
                     Image = k.Image,
                     Price = k.Price,
                     IsOnSale = k.IsOnSale,
@@ -110,40 +133,89 @@ namespace KnifeShop.DB.Repositories.Knifes
             return (items, totalCount);
         }
 
-        public async Task<List<Knife>> GetOnSale(string? search, string? sortItem, string? order)
+        public async Task<List<GetKnifesResponse>> GetOnSale(string? search, string? sortItem, string? order)
         {
-            var notesQuery = _context.Knifes
+            var query = _context.Knifes
                 .Include(k => k.KnifeInfo)
-                .Where(n => n.IsOnSale)
-                .Where(n => string.IsNullOrWhiteSpace(search) ||
-                            n.Title.ToLower().Contains(search.ToLower()));
+                .Include(k => k.KnifeCategories)
+                    .ThenInclude(kc => kc.Category)
+                .Where(k => k.IsOnSale)
+                .Where(k => string.IsNullOrWhiteSpace(search) ||
+                            k.Title.ToLower().Contains(search.ToLower()));
 
             Expression<Func<Knife, object>> selectorKey = sortItem?.ToLower() switch
             {
-                "date" => note => note.CreatedAt,
-                "title" => note => note.Title,
-                "price" => note => note.Price,
-                _ => note => note.Id
+                "date" => knife => knife.CreatedAt,
+                "title" => knife => knife.Title,
+                "price" => knife => knife.Price,
+                _ => knife => knife.Id
             };
 
-            notesQuery = order == "desc"
-                ? notesQuery.OrderByDescending(selectorKey)
-                : notesQuery.OrderBy(selectorKey);
+            query = order == "desc"
+                ? query.OrderByDescending(selectorKey)
+                : query.OrderBy(selectorKey);
 
-            return await notesQuery.ToListAsync();
+            return await query
+               .Select(k => new GetKnifesResponse
+               {
+                   Id = k.Id,
+                   Title = k.Title,
+                   Categories = k.KnifeCategories
+                       .Where(kc => kc.Category != null)
+                       .Select(kc => new CategoryDto { Id = kc.CategoryId, Name = kc.Category!.Name })
+                       .ToList(),
+                   Image = k.Image,
+                   Price = k.Price,
+                   IsOnSale = k.IsOnSale
+               }).ToListAsync();
         }
 
-        public async Task<Knife?> Get(long knifeId)
+        public async Task<GetKnifeResponse?> Get(long knifeId, Guid? userId)
         {
-            return await _context.Knifes
+            var knife = await _context.Knifes
                 .Include(k => k.KnifeInfo)
+                .Include(k => k.KnifeCategories)
+                    .ThenInclude(kc => kc.Category)
                 .FirstOrDefaultAsync(k => k.Id == knifeId);
+
+            if (knife == null)
+                return null;
+
+            var isFavorite = userId.HasValue &&
+                await _context.FavoriteKnifes.AnyAsync(f => f.UserId == userId && f.KnifeId == knifeId);
+
+            return new GetKnifeResponse
+            {
+                Id = knife.Id,
+                Title = knife.Title,
+                Categories = knife.KnifeCategories
+                        .Where(kc => kc.Category != null)
+                        .Select(kc => new CategoryDto { Id = kc.CategoryId, Name = kc.Category!.Name })
+                        .ToList(),
+                Description = knife.Description,
+                Image = knife.Image,
+                Images = knife.Images,
+                Price = knife.Price,
+                IsOnSale = knife.IsOnSale,
+                CreatedAt = knife.CreatedAt,
+                KnifeInfo = new KnifeInfoDto
+                { 
+                    BladeLength = knife?.KnifeInfo?.BladeLength,
+                    ButtThickness = knife?.KnifeInfo?.ButtThickness,
+                    Country = knife?.KnifeInfo?.Country,
+                    HandleMaterial = knife?.KnifeInfo?.HandleMaterial,
+                    Manufacturer = knife?.KnifeInfo?.Manufacturer,
+                    OverallLength = knife?.KnifeInfo?.OverallLength,
+                    SteelGrade = knife?.KnifeInfo?.SteelGrade,
+                    Weight = knife?.KnifeInfo?.Weight
+                },
+                IsFavorite = isFavorite
+            };
         }
 
         public async Task<long> Delete(long knifeId)
         {
             var knife = await _context.Knifes
-                .Include(k => k.KnifeInfo)
                 .FirstOrDefaultAsync(k => k.Id == knifeId);
 
             if (knife is null)

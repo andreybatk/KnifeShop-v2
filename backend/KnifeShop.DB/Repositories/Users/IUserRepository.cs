@@ -1,6 +1,5 @@
-﻿using KnifeShop.DB.Contracts;
+﻿using KnifeShop.Contracts.Knife;
 using KnifeShop.DB.Enums;
-using KnifeShop.DB.Models;
 
 namespace KnifeShop.DB.Repositories.Users
 {

@@ -34,7 +34,8 @@ export class SearchPageComponent implements OnInit {
       sortItem: this.sortItem,
       sortOrder: this.sortOrder,
       page: this.page,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      categoryIds: null //TODO
     };
 
     this.knifeService.getKnifesPaginated(request).subscribe(response => {

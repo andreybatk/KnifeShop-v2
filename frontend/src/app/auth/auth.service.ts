@@ -108,6 +108,10 @@ export class AuthService {
     return this.hasRole('Admin');
   }
 
+  get isManager(): boolean {
+    return this.hasRole('Manager');
+  }
+
   hasRole(role: string): boolean {
     return this.userRoles.includes(role);
   }

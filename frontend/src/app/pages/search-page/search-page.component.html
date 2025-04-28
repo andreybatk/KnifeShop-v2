@@ -1,14 +1,14 @@
 <div class="catalog-container">
-  <h1 class="catalog-title">Ножи</h1>
+  <h1 class="catalog-title">Каталог ножей</h1>
 
   <div class="catalog-controls">
-    <input type="text" placeholder="Поиск..." [(ngModel)]="search" (input)="onSearch()" class="input search-input" />
-    <select [(ngModel)]="sortItem" (change)="onSortChange()" class="input search-input">
+    <input type="text" placeholder="Поиск..." [(ngModel)]="search" (input)="onSearch()" class="tt-input" />
+    <select [(ngModel)]="sortItem" (change)="onSortChange()" class="tt-input">
       <option value="title">Название</option>
-      <option value="date">Дате</option>
+      <option value="date">Дата</option>
       <option value="price">Цена</option>
     </select>
-    <select [(ngModel)]="sortOrder" (change)="onSortChange()" class="input search-input">
+    <select [(ngModel)]="sortOrder" (change)="onSortChange()" class="tt-input">
       <option value="asc">По возрастанию </option>
       <option value="desc">По убыванию</option>
     </select>

@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { KnifeService } from '../../../data/services/knife.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FileValidationService } from '../../../data/services/file-validation.service';
 import { CommonModule } from '@angular/common';
+import { Category } from '../../../data/interfaces/category.interface';
+import { CategoryService } from '../../../data/services/category.service';
 
 @Component({
   selector: 'app-create-knife-page',
@@ -12,14 +14,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './create-knife-page.component.scss',
   providers: [FileValidationService]
 })
-export class CreateKnifePageComponent {
+export class CreateKnifePageComponent implements OnInit {
   knifeService = inject(KnifeService)
   router = inject(Router)
   fileValidation = inject(FileValidationService)
+  categoryService = inject(CategoryService)
+  allCategories: Category[] | null = null
+
+  ngOnInit() {
+    this.categoryService.getCategories().subscribe(c => this.allCategories = c)
+  }
 
   form = new FormGroup({
     title: new FormControl(null, Validators.required),
-    category: new FormControl(null, Validators.required),
+    categoryIds: new FormControl([], Validators.required),
     price: new FormControl(null, [Validators.required, Validators.min(0)]),
     description: new FormControl(null),
     isOnSale: new FormControl(true),

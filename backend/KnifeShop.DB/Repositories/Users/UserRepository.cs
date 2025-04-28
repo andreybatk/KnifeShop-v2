@@ -1,4 +1,5 @@
-﻿using KnifeShop.DB.Contracts;
+﻿using KnifeShop.Contracts.Category;
+using KnifeShop.Contracts.Knife;
 using KnifeShop.DB.Enums;
 using KnifeShop.DB.Models;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,10 @@ namespace KnifeShop.DB.Repositories.Users
                 .Where(fk => fk.UserId == userId && fk.Knife != null)
                 .OrderByDescending(fk => fk.AddedAt)
                 .Include(fk => fk.Knife)
-                .Select(fk => fk.Knife!);
+                    .ThenInclude(k => k.KnifeCategories)
+                        .ThenInclude(kc => kc.Category)
+                .Select(fk => fk.Knife);
+
 
             int totalCount = await query.CountAsync();
 
@@ -70,7 +74,10 @@ namespace KnifeShop.DB.Repositories.Users
                  {
                      Id = k.Id,
                      Title = k.Title,
-                     Category = k.Category,
+                     Categories = k.KnifeCategories
+                        .Where(kc => kc.Category != null)
+                        .Select(kc => new CategoryDto { Id = kc.CategoryId, Name = kc.Category!.Name })
+                        .ToList(),
                      Image = k.Image,
                      Price = k.Price,
                      IsOnSale = k.IsOnSale,

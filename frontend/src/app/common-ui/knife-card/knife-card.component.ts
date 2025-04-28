@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../data/services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { FavoriteService } from '../../data/services/favorite.service';
 
 @Component({
   selector: 'app-knife-card',
@@ -15,28 +16,19 @@ import { CommonModule } from '@angular/common';
 export class KnifeCardComponent {
   @Input() knife!: KnifeBriefly;
   router = inject(Router)
-
+  favoriteService = inject(FavoriteService)
   userService = inject(UserService);
   authService = inject(AuthService);
 
   toggleFavorite(event: MouseEvent) {
     event.stopPropagation();
-
-    if(!this.authService.isAuth)
-    {
-      this.router.navigate(['login'])
-      return
-    }
-
-    if (this.knife.isFavorite) {
-      this.userService.removeFavoriteKnife(this.knife.id).subscribe(() => {
-        this.knife.isFavorite = false;
+    
+    if (!this.knife?.id) return;
+  
+    this.favoriteService.toggleFavorite(this.knife.id, this.knife.isFavorite)
+      .subscribe((newValue: boolean) => {
+        this.knife.isFavorite = newValue;
       });
-    } else {
-      this.userService.addFavoriteKnife(this.knife.id).subscribe(() => {
-        this.knife.isFavorite = true;
-      });
-    }
   }
 
   onClickCard() {
