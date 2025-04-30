@@ -4,13 +4,11 @@
   (ngSubmit) = "onSubmit()"
 >
   <h1 class="h1 mb60">Регистрация</h1>
-
-  <div *ngIf="errors.length" class="error-messages mb16">
-    <ul>
-      <li *ngFor="let error of errors">{{ error }}</li>
-    </ul>
-  </div>
-
+  <label class="tt-control-label mb16">
+    <div class="error-text" *ngIf="errorMessage">
+      {{errorMessage}}
+    </div>
+  </label>
   <label class="tt-control-label mb16">
       Email
       <input formControlName = "email" class="input tt-input" type="text" placeholder="Введите логин">
@@ -49,7 +47,7 @@
         Пароли не совпадают.
       </div>
     </div>  
-</label>
+  </label>
 
   <button class="btn btn-shadow mb16" [class.inactive] = "form.invalid" type="submit">Регистрация</button>
   <button class="btn btn-shadow" (click) = "onLoginSubmit()" type="button">Есть аккаунт? Войти</button>

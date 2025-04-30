@@ -16,43 +16,19 @@ namespace KnifeShop.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly RefreshTokenValidator _refreshTokenValidator;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly AuthenticatorService _authenticatorService;
 
-        public AuthController(IConfiguration configuration, UserManager<User> userManager, RefreshTokenValidator refreshTokenValidator, IRefreshTokenRepository refreshTokenRepository, AuthenticatorService authenticatorService)
+        public AuthController(UserManager<User> userManager, RefreshTokenValidator refreshTokenValidator, IRefreshTokenRepository refreshTokenRepository, AuthenticatorService authenticatorService)
         {
-            _configuration = configuration;
             _userManager = userManager;
             _refreshTokenValidator = refreshTokenValidator;
             _refreshTokenRepository = refreshTokenRepository;
             _authenticatorService = authenticatorService;
         }
 
-        [AllowAnonymous]
-        [HttpPost("google-login")]
-        [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GoogleAuth([FromBody] GoogleAuthRequest request)
-        {
-            var clientId = _configuration["Google:ClientId"];
-            var validationUrl = $"https://oauth2.googleapis.com/tokeninfo?id_token={request.Token}";
-
-            using var httpClient = new HttpClient();
-            var response = await httpClient.GetStringAsync(validationUrl);
-            var payload = JsonSerializer.Deserialize<GoogleTokenPayload>(response);
-
-            if (payload?.Aud != clientId)
-            {
-                return Unauthorized(new { message = "Invalid token." });
-            }
-
-            return Ok(new { email = payload?.Email });
-        }
-
-        [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -76,7 +52,6 @@ namespace KnifeShop.API.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -112,7 +87,6 @@ namespace KnifeShop.API.Controllers
             return Ok(response);
         }
 
-        [AllowAnonymous]
         [HttpPost("refresh")]
         [ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -179,3 +153,23 @@ namespace KnifeShop.API.Controllers
         }
     }
 }
+
+/*[HttpPost("google-login")]
+[ProducesResponseType(typeof(AuthenticatedUserResponse), StatusCodes.Status200OK)]
+[ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+public async Task<IActionResult> GoogleAuth([FromBody] GoogleAuthRequest request)
+{
+    var clientId = _configuration["Google:ClientId"];
+    var validationUrl = $"https://oauth2.googleapis.com/tokeninfo?id_token={request.Token}";
+
+    using var httpClient = new HttpClient();
+    var response = await httpClient.GetStringAsync(validationUrl);
+    var payload = JsonSerializer.Deserialize<GoogleTokenPayload>(response);
+
+    if (payload?.Aud != clientId)
+    {
+        return Unauthorized(new { message = "Invalid token." });
+    }
+
+    return Ok(new { email = payload?.Email });
+}*/

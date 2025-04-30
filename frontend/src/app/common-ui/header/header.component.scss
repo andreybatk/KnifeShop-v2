@@ -9,7 +9,11 @@
 .nav a {
   margin-right: 1rem;
   text-decoration: none;
-  color: white;
+  color: var(--light-color);
+
+  &.active {
+    color: var(--primary-color);
+  }
 }
 
 .right-side {
@@ -25,11 +29,6 @@
 
 .favorite {
   margin-right: 8px;
-}
-
-.favorite-btn {
-  cursor: pointer;
-  filter: invert(1) sepia(1) saturate(100%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 
 .user-info button {

@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { RegisterValidationService } from '../../data/services/register-validation.service';
 import { CommonModule } from '@angular/common';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-register-page',
@@ -18,7 +19,7 @@ export class RegisterPageComponent {
   registerValidation = inject(RegisterValidationService)
   router = inject(Router)
   isPasswordVisible = signal<boolean>(false)
-  errors: string[] = [];
+  errorMessage: string | null = null;
 
   form = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -33,16 +34,25 @@ export class RegisterPageComponent {
     if (this.form.valid) {
       //@ts-ignore
       this.authService.register(this.form.value)
+        .pipe(
+          catchError(error => {
+            if(error?.error?.errors[0]?.description)
+            {
+              this.errorMessage = error?.error?.errors[0]?.description;
+            }
+            else
+            {
+              this.errorMessage = 'Ошибка регистрации.'
+            }
+            return throwError(() => error);
+          })
+        )
         .subscribe({
           next: () => {
+            this.errorMessage = ''
             this.router.navigate(['login']);
           },
-          error: (err) => {
-            if (err?.error) {
-              this.errors = err.error.map((e: any) => e.description);
-            } else {
-              this.errors = ['Произошла непредвиденная ошибка. Попробуйте снова.'];
-            }
+          error: () => {
           }
         });
     }

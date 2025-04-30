@@ -8,3 +8,9 @@
 .edit-form * { 
   box-sizing: border-box;
 }
+
+.category-info {
+  display: flex;
+  flex-direction: column;
+  gap:12px;
+}

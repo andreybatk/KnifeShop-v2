@@ -10,7 +10,7 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root'
 })
 
-export class AuthService {
+export class AuthService{
   http = inject(HttpClient)
   cookieService = inject(CookieService)
   router = inject(Router)
@@ -19,6 +19,11 @@ export class AuthService {
   token: string | null = null;
   refreshToken: string | null = null;
 
+  constructor() {
+    this.token = this.cookieService.get('token');
+    this.refreshToken = this.cookieService.get('refreshToken');
+  }
+  
   get isAuth() {
     if(!this.token)
     {
@@ -45,11 +50,8 @@ export class AuthService {
   register(payload: {email: string, username: string, password: string, confirmPassword: string}) {
     return this.http.post(
       `${this.baseApiUrl}register`,
-      payload).pipe(
-        catchError(error => {
-          return throwError(() => new Error(error));
-        })
-      )}
+      payload)
+  }
 
   refreshAuthToken() {
     return this.http.post<TokenResponse>(

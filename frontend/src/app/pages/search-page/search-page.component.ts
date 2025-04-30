@@ -20,7 +20,7 @@ export class SearchPageComponent implements OnInit {
   sortItem = 'title';
   sortOrder: 'asc' | 'desc' = 'asc';
   page: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 12;
   totalItems: number = 0;
   knifesBriefly: KnifeBriefly[] = [];
 

@@ -3,20 +3,25 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CategoryService } from '../../../data/services/category.service';
 import { Category } from '../../../data/interfaces/category.interface';
 import { CommonModule } from '@angular/common';
+import { FileValidationService } from '../../../data/services/file-validation.service';
+import { ImgUrlPipe } from '../../../helpers/pipes/img-url.pipe';
 
 @Component({
   selector: 'app-edit-categories-page',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ImgUrlPipe],
   templateUrl: './edit-category-page.component.html',
   styleUrl: './edit-category-page.component.scss'
 })
 export class EditCategoryPageComponent implements OnInit{
   categoryService = inject(CategoryService)
+  fileValidation = inject(FileValidationService)
   categories: Category[] = []
   errorMessage: string | null = null
+  imageFile: File | null = null
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
+    image: new FormControl(null, this.fileValidation.FileTypeValidator())
   });
 
   ngOnInit() {
@@ -39,7 +44,7 @@ export class EditCategoryPageComponent implements OnInit{
       const name = this.form.value.name;
       if (!name) return;
 
-      this.categoryService.addCategory(name).subscribe({
+      this.categoryService.addCategory(name, this.imageFile).subscribe({
         next: () => {
           this.form.reset();
           this.loadCategories();
@@ -61,6 +66,13 @@ export class EditCategoryPageComponent implements OnInit{
           this.errorMessage = 'Не удалось удалить категорию.';
         }
       });
+    }
+  }
+
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.imageFile = input.files[0];
     }
   }
 }

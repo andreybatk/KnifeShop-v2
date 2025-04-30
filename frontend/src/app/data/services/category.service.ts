@@ -15,8 +15,15 @@ export class CategoryService {
     return this.http.get<Category[]>(`${this.baseApiUrl}`);
   }
 
-  addCategory(name: string) {
-      return this.http.post(`${this.baseApiUrl}`, { name } );
+  addCategory(name: string, image: File | null = null) {
+    const formData = new FormData()
+    formData.append('name', name)
+
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+
+    return this.http.post(`${this.baseApiUrl}`, formData );
   }
     
   deleteCategory(id: number) {

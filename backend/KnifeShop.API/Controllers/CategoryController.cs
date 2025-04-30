@@ -1,4 +1,5 @@
-﻿using KnifeShop.Contracts.Category;
+﻿using KnifeShop.BL.Services.File;
+using KnifeShop.Contracts.Category;
 using KnifeShop.DB.Repositories.Categories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,14 @@ namespace KnifeShop.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUploadFileService _fileService;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository, IUploadFileService fileService)
         {
             _categoryRepository = categoryRepository;
+            _fileService = fileService;
         }
+
 
         /// <remarks>
         /// Manager role required
@@ -23,12 +27,14 @@ namespace KnifeShop.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
+        public async Task<IActionResult> Create([FromForm] CreateCategoryRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Name))
                 return BadRequest("Category name cannot be empty.");
 
-            await _categoryRepository.AddCategory(request.Name);
+            var imagePath = await _fileService.UploadImage(request.Image);
+
+            await _categoryRepository.AddCategory(request.Name, imagePath);
             return Ok();
         }
 

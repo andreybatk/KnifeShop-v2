@@ -4,7 +4,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { canActivateAuth, canActivateGuest, canActivateRole } from './auth/access.guard';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
-import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
+import { AccessDeniedPageComponent } from './pages/access-denied-page/access-denied-page.component';
 import { AdminLayoutComponent } from './common-ui/admin-layout/admin-layout.component';
 import { CreateKnifePageComponent } from './pages/admin/create-knife-page/create-knife-page.component';
 import { AdminPanelComponent } from './pages/admin/admin-panel/admin-panel.component';
@@ -15,6 +15,8 @@ import { ProfileLayoutComponent } from './common-ui/profile-layout/profile-layou
 import { FavoritePageComponent } from './pages/profile/favorite-page/favorite-page.component';
 import { EditRolesPageComponent } from './pages/admin/edit-roles-page/edit-roles-page.component';
 import { EditCategoryPageComponent } from './pages/admin/edit-category-page/edit-category-page.component';
+import { ContactsPageComponent } from './pages/contacts-page/contacts-page.component';
+import { DeliveryPageComponent } from './pages/delivery-page/delivery-page.component';
 
 export const routes: Routes = [
 
@@ -36,5 +38,7 @@ export const routes: Routes = [
     {path: 'edit-roles', component: EditRolesPageComponent, canActivate: [canActivateRole(['Admin'])]},
     ], canActivate: [canActivateAuth, canActivateRole(['Manager'])]
   },
-  {path: 'access-denied', component: AccessDeniedComponent }
+  {path: 'contacts', component: ContactsPageComponent },
+  {path: 'delivery', component: DeliveryPageComponent },
+  {path: 'access-denied', component: AccessDeniedPageComponent }
 ];

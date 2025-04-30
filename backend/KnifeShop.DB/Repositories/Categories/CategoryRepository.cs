@@ -13,12 +13,13 @@ namespace KnifeShop.DB.Repositories.Categories
             _context = context;
         }
 
-        public async Task<bool> AddCategory(string categoryName)
+        public async Task<bool> AddCategory(string categoryName, string? imagePath)
         {
             if (string.IsNullOrWhiteSpace(categoryName))
                 throw new ArgumentException("Category name cannot be empty.");
 
-            var category = new Category { Name = categoryName };
+            var category = new Category { Name = categoryName, Image = imagePath };
+
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
@@ -46,7 +47,8 @@ namespace KnifeShop.DB.Repositories.Categories
              .Select(c => new CategoryDto
              {
                  Id = c.Id,
-                 Name = c.Name
+                 Name = c.Name,
+                 Image = c.Image
              })
              .ToListAsync();
         }

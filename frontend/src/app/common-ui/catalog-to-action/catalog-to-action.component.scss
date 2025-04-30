@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.catalog-to-action {
+  max-width: 1200px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--light-color);
+  border-radius: 12px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.catalog-to-action .h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: var(--light-color);
+}
+
+.catalog-to-action .h5 {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: var(--gray-color);
+  line-height: 1.6;
+}
+
+.catalog-to-action .btn {
+  max-width: 250px;
+  margin-bottom: 30px;
+}
+
+.my-team-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--light-color);
+  margin-top: 20px;
+}

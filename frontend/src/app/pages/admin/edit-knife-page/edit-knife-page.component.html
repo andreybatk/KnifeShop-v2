@@ -13,10 +13,17 @@
 
   <label class="tt-control-label mb16">
     Категория *
-    <select formControlName="categoryIds" class="input tt-input" placeholder="Введите категорию" multiple>
-      <option *ngFor="let category of knife.categories" [value] = "category.id"> {{category.name}}</option>
-    </select>
+    <ng-select
+      class="select-category"
+      [items]="allCategories"
+      bindLabel="name"
+      bindValue="id"
+      formControlName="categoryIds"
+      [multiple]="true"
+      placeholder="Выберите категории">
+    </ng-select>
   </label>
+  
 
   <label class="tt-control-label mb16">
     Цена *

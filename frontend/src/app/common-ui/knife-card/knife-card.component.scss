@@ -8,7 +8,6 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
   max-width: 320px;
-  margin: 2%;
   position: relative;
   
   &:hover {
@@ -38,24 +37,51 @@
   .knife-card__price {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 12px;
   }
 
-  .favorite {
-    position: absolute;
-    top: 16px;
-    right: 16px;
+  .knife-available {
+    color: var(--green-color);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 0;
     
-    .favorite-btn {
-      
-      
-      &.active {
-        color:var(--red-contrast-color)
-      }
-    
-      &:hover {
-        transform: scale(1.1);
-      }
+    &::before {
+      color: var(--green-color);
+    }
+  }
+  
+  .knife-unavailable {
+    color: var(--red-contrast-color);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 0;
+  
+    &::before {
+      color: var(--red-contrast-color);
+    }
+  }
+
+  .btn-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: relative;
+    padding: 10px 16px;
+  }
+  
+  .favorite-btn {
+    transition: transform 0.2s ease-in-out;
+  
+    color:var(--light-color);
+  
+    &.active {
+      color: var(--red-contrast-color);
+    }
+  
+    &:hover {
+      transform: scale(1.1);
     }
   }
 }
+

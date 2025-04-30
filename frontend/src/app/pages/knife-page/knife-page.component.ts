@@ -21,6 +21,7 @@ export class KnifePageComponent implements OnInit {
   favoriteService = inject(FavoriteService)
 
   knife:Knife | null = null;
+  baseUrl = 'http://localhost:4200/knife'
   baseApiUrl = 'http://localhost:5000';
   id:number | null = null;
 
@@ -46,6 +47,13 @@ export class KnifePageComponent implements OnInit {
 
   onClickEdit() {
     this.router.navigate([`admin/edit-knife/${this.id}`])
+  }
+
+  onClickSendMessage() {
+    const message = `Здравствуйте. Меня заинтересовал товар ${this.knife?.title} (${this.baseUrl}/${this.knife?.id}).`;
+    const username = 'therealbushcraft';
+    const url = `https://t.me/${username}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   }
 
   toggleFavorite(event: MouseEvent) {

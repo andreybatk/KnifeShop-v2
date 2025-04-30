@@ -128,6 +128,7 @@ namespace KnifeShop.DB.Repositories.Knifes
                     IsOnSale = k.IsOnSale,
                     IsFavorite = userId.HasValue && k.FavoriteKnifes.Any(f => f.UserId == userId)
                 })
+                .OrderByDescending(k => k.IsOnSale)
                 .ToListAsync();
 
             return (items, totalCount);

@@ -68,5 +68,6 @@ export class EditRolesPageComponent implements OnInit {
         this.currentRoles = this.currentRoles!.filter(r => r !== role) ?? null;
       });
     }
+    alert('Роль пользователя успешно изменена.')
   }
 }

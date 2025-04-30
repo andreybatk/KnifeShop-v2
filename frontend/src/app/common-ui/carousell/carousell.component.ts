@@ -24,6 +24,8 @@ export class CarousellComponent implements OnInit {
   slideConfig = {
     slidesToShow: 3,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
     infinite: true,
     arrows: true,
     responsive: [

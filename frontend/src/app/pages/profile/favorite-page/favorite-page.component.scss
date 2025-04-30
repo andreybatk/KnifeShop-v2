@@ -8,20 +8,3 @@
 .knife-wrapper{
   margin-bottom: 24px;
 }
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
-  gap: 16px;
-}
-
-.pagination button {
-  background-color: var(--dark-color);
-  color: var(--light-color);
-  padding: 8px 16px;
-  border: 1px solid var(--light-color);
-  cursor: pointer;
-  border-radius: 4px;
-}

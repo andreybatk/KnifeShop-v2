@@ -12,9 +12,20 @@
 
   <label class="tt-control-label mb16">
     Категория *
-    <select formControlName="categoryIds" class="input tt-input" placeholder="Введите категорию" multiple>
-      <option *ngFor="let category of allCategories" [value] = "category.id"> {{category.name}}</option>
-    </select>
+    <ng-select
+      formControlName="categoryIds"
+      [items]="allCategories"
+      bindLabel="name"
+      bindValue="id"
+      [multiple]="true"
+      placeholder="Выберите категории"
+      [closeOnSelect]="false"
+      class="input select-category">
+      <ng-template ng-option-tmp let-item="item" let-selected="selected">
+        
+        {{ item.name }}
+      </ng-template>
+    </ng-select>
   </label>
 
   <label class="tt-control-label mb16">

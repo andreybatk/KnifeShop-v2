@@ -7,10 +7,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { ImgUrlPipe } from '../../../helpers/pipes/img-url.pipe';
 import { Category } from '../../../data/interfaces/category.interface';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { CategoryService } from '../../../data/services/category.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-edit-knife-page',
-  imports: [ReactiveFormsModule, CommonModule, ImgUrlPipe],
+  imports: [ReactiveFormsModule, CommonModule, ImgUrlPipe, NgSelectModule],
   templateUrl: './edit-knife-page.component.html',
   styleUrl: './edit-knife-page.component.scss'
 })
@@ -20,36 +23,42 @@ export class EditKnifePageComponent implements OnInit {
   router = inject(Router)
   knifeService = inject(KnifeService)
   fileValidation = inject(FileValidationService)
+  categoryService = inject(CategoryService)
 
+  allCategories: Category[] = [];
   knife:Knife | null = null;
   id:number | null = null;
 
   ngOnInit() {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
-    if (this.id) {
-      this.knifeService.getKnife(this.id).subscribe((knife) => {
-        this.knife = knife;
+    if (!this.id) return;
 
-        this.form.patchValue({
-          id: knife.id,
-          title: knife.title,
-          categoryIds: knife.categories.map(x => x.id),
-          price: knife.price,
-          description: knife.description,
-          isOnSale: knife.isOnSale,
-          knifeInfo: {
-            overallLength: knife.knifeInfo?.overallLength,
-            bladeLength: knife.knifeInfo?.bladeLength,
-            buttThickness: knife.knifeInfo?.buttThickness,
-            weight: knife.knifeInfo?.weight,
-            handleMaterial: knife.knifeInfo?.handleMaterial,
-            country: knife.knifeInfo?.country,
-            manufacturer: knife.knifeInfo?.manufacturer,
-            steelGrade: knife.knifeInfo?.steelGrade,
-          }
-        });
+    forkJoin({
+      knife: this.knifeService.getKnife(this.id),
+      categories: this.categoryService.getCategories()
+    }).subscribe(({ knife, categories }) => {
+      this.knife = knife;
+      this.allCategories = categories;
+
+      this.form.patchValue({
+        id: knife.id,
+        title: knife.title,
+        categoryIds: knife.categories.map(x => x.id),
+        price: knife.price,
+        description: knife.description,
+        isOnSale: knife.isOnSale,
+        knifeInfo: {
+          overallLength: knife.knifeInfo?.overallLength,
+          bladeLength: knife.knifeInfo?.bladeLength,
+          buttThickness: knife.knifeInfo?.buttThickness,
+          weight: knife.knifeInfo?.weight,
+          handleMaterial: knife.knifeInfo?.handleMaterial,
+          country: knife.knifeInfo?.country,
+          manufacturer: knife.knifeInfo?.manufacturer,
+          steelGrade: knife.knifeInfo?.steelGrade,
+        }
       });
-    }
+    });
   }
 
   form = new FormGroup({

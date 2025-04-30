@@ -83,9 +83,10 @@ namespace KnifeShop.API
             {
                 options.AddDefaultPolicy(policy =>
                 {
+                    //policy.WithOrigins("https://myknifeshop.ru");
                     policy.AllowAnyOrigin();
-                    //policy.WithOrigins("http://localhost:3000");
                     policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
                 });
             });
 
@@ -115,6 +116,9 @@ namespace KnifeShop.API
             {
                 var services = scope.ServiceProvider;
 
+                var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.Migrate();
+
                 await SeedData.SeedRolesAsync(services);
                 await SeedData.SeedAdminUserAsync(services, authenticationConfiguration.AdminEmail, authenticationConfiguration.AdminPassword);
             }
@@ -123,6 +127,12 @@ namespace KnifeShop.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            if (!Directory.Exists(uploadsPath))
+            {
+                Directory.CreateDirectory(uploadsPath);
             }
 
             app.UseStaticFiles(new StaticFileOptions
@@ -134,6 +144,7 @@ namespace KnifeShop.API
             //app.UseHttpsRedirection();
 
             app.UseCors(builder => builder
+                //.WithOrigins("https://myknifeshop.ru")
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
@@ -147,32 +158,32 @@ namespace KnifeShop.API
     }
 }
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-//})
-//.AddCookie()
-//.AddGoogle(options =>
-//{
-//    options.ClientId = builder.Configuration.GetSection("Google:ClientId").Get<string>() ?? throw new InvalidOperationException("Google 'ClientId' not found.");
-//    options.ClientSecret = builder.Configuration.GetSection("Google:ClientSecret").Get<string>() ?? throw new InvalidOperationException("Google 'ClientSecret' not found.");
+/*builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration.GetSection("Google:ClientId").Get<string>() ?? throw new InvalidOperationException("Google 'ClientId' not found.");
+    options.ClientSecret = builder.Configuration.GetSection("Google:ClientSecret").Get<string>() ?? throw new InvalidOperationException("Google 'ClientSecret' not found.");
 
-//    options.Events.OnCreatingTicket = context =>
-//    {
-//        var claims = context.Identity?.Claims?.ToList() ?? new List<Claim>();
-//        var email = context.Identity?.Name;
+    options.Events.OnCreatingTicket = context =>
+    {
+        var claims = context.Identity?.Claims?.ToList() ?? new List<Claim>();
+        var email = context.Identity?.Name;
 
-//        if (admins != null && email != null && admins.Contains(email))
-//        {
-//            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-//        }
-//        else
-//        {
-//            claims.Add(new Claim(ClaimTypes.Role, "User"));
-//        }
+        if (admins != null && email != null && admins.Contains(email))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+        }
+        else
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "User"));
+        }
 
-//        context.Identity?.AddClaims(claims);
-//        return Task.CompletedTask;
-//    };
-//});
+        context.Identity?.AddClaims(claims);
+        return Task.CompletedTask;
+    };
+});*/

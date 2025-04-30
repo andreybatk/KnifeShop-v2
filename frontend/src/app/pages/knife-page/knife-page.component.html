@@ -1,13 +1,12 @@
 <div *ngIf="knife" class="knife-card">
   <div class="top-section">
-
     <div class="favorite">
       <img [src]="knife.image | imgUrl" alt="{{ knife.title }}" (click)="openImage(knife.image)" class="knife-image">
-      <button class="favorite-btn"
-      (click)="toggleFavorite($event)"
-      [class.active]="knife.isFavorite">
-        <svg xmlns="http://www.w3.org/2000/svg" class="favorite-btn" width="64" height="64" viewBox="0 0 1024 1024"><path fill="currentColor" d="M923 283.6a260.04 260.04 0 0 0-56.9-82.8a264.4 264.4 0 0 0-84-55.5A265.34 265.34 0 0 0 679.7 125c-49.3 0-97.4 13.5-139.2 39c-10 6.1-19.5 12.8-28.5 20.1c-9-7.3-18.5-14-28.5-20.1c-41.8-25.5-89.9-39-139.2-39c-35.5 0-69.9 6.8-102.4 20.3c-31.4 13-59.7 31.7-84 55.5a258.44 258.44 0 0 0-56.9 82.8c-13.9 32.3-21 66.6-21 101.9c0 33.3 6.8 68 20.3 103.3c11.3 29.5 27.5 60.1 48.2 91c32.8 48.9 77.9 99.9 133.9 151.6c92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3c56-51.7 101.1-102.7 133.9-151.6c20.7-30.9 37-61.5 48.2-91c13.5-35.3 20.3-70 20.3-103.3c.1-35.3-7-69.6-20.9-101.9M512 814.8S156 586.7 156 385.5C156 283.6 240.3 201 344.3 201c73.1 0 136.5 40.8 167.7 100.4C543.2 241.8 606.6 201 679.7 201c104 0 188.3 82.6 188.3 184.5c0 201.2-356 429.3-356 429.3"/></svg>
-      </button>
+        <svg 
+        class="favorite-btn" 
+        (click)="toggleFavorite($event)"
+        [class.active]="knife.isFavorite"
+        xmlns="http://www.w3.org/2000/svg" class="favorite-btn" width="64" height="64" viewBox="0 0 1024 1024"><path fill="currentColor" d="M923 283.6a260.04 260.04 0 0 0-56.9-82.8a264.4 264.4 0 0 0-84-55.5A265.34 265.34 0 0 0 679.7 125c-49.3 0-97.4 13.5-139.2 39c-10 6.1-19.5 12.8-28.5 20.1c-9-7.3-18.5-14-28.5-20.1c-41.8-25.5-89.9-39-139.2-39c-35.5 0-69.9 6.8-102.4 20.3c-31.4 13-59.7 31.7-84 55.5a258.44 258.44 0 0 0-56.9 82.8c-13.9 32.3-21 66.6-21 101.9c0 33.3 6.8 68 20.3 103.3c11.3 29.5 27.5 60.1 48.2 91c32.8 48.9 77.9 99.9 133.9 151.6c92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3c56-51.7 101.1-102.7 133.9-151.6c20.7-30.9 37-61.5 48.2-91c13.5-35.3 20.3-70 20.3-103.3c.1-35.3-7-69.6-20.9-101.9M512 814.8S156 586.7 156 385.5C156 283.6 240.3 201 344.3 201c73.1 0 136.5 40.8 167.7 100.4C543.2 241.8 606.6 201 679.7 201c104 0 188.3 82.6 188.3 184.5c0 201.2-356 429.3-356 429.3"/></svg>
     </div>
     
     <div class="knife-details">
@@ -20,27 +19,32 @@
           {{category.name}}
           </span>
       </p>
-      <p class="knife-price">Цена: {{ knife.price }} &#8381;</p>
-      <p class="knife-sale" *ngIf="!knife.isOnSale">Отсутствует в продаже.</p>
+      <div class="knife-sale">
+        <h3 class="h3">{{ knife.price }} &#8381;</h3>
+        <p [class]="knife.isOnSale ? 'knife-available' : 'knife-unavailable'">{{ knife.isOnSale ? 'Есть в наличии' : 'Отсутствует в наличии' }}</p>
+      </div>
       <div class="knife-page-btns">
-        <button *ngIf="authService.isManager" class="icon-btn" (click) = "onClickEdit()">
+        <button *ngIf="authService.isManager" class="btn-icon" (click) = "onClickEdit()">
           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon t6" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m16.475 5.408l2.117 2.117m-.756-3.982L12.109 9.27a2.118 2.118 0 0 0-.58 1.082L11 13l2.648-.53c.41-.082.786-.283 1.082-.579l5.727-5.727a1.853 1.853 0 1 0-2.621-2.621"/><path d="M19 15v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3"/></g></svg>
           Редактировать
         </button>
         
-        <button class="icon-btn">
+        <button class="btn-icon" (click) = "onClickSendMessage()">
           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon t6" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42l10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001l-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15l4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434"/></svg>
           Написать продавцу
         </button>
-        
       </div>
     </div>
   </div>
 
-  <p class="knife-description">{{ knife.description }}</p>
+  <div class="knife-description">
+    <p>{{ knife.description }}</p>
+    <p>{{ knife.createdAt | date: 'dd.MM.yyyy' }}</p>
+  </div>
+    
 
   <div *ngIf="knife.knifeInfo" class="knife-specs">
-    <h3>Характеристики:</h3>
+    <h4 class="h4">Характеристики</h4>
     <ul>
       <li *ngIf="knife.knifeInfo.overallLength">Общая длина: {{ knife.knifeInfo.overallLength }} мм</li>
       <li *ngIf="knife.knifeInfo.bladeLength">Длина клинка: {{ knife.knifeInfo.bladeLength }} мм</li>
@@ -54,7 +58,7 @@
   </div>
 
   <div class="knife-gallery" *ngIf="knife.images?.length">
-    <h4>Галерея:</h4>
+    <h4 class="h4">Галерея</h4>
     <div class="gallery">
       <img
         *ngFor="let img of knife.images"

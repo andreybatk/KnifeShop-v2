@@ -6,10 +6,11 @@ import { FileValidationService } from '../../../data/services/file-validation.se
 import { CommonModule } from '@angular/common';
 import { Category } from '../../../data/interfaces/category.interface';
 import { CategoryService } from '../../../data/services/category.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-create-knife-page',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NgSelectModule],
   templateUrl: './create-knife-page.component.html',
   styleUrl: './create-knife-page.component.scss',
   providers: [FileValidationService]
@@ -45,8 +46,8 @@ export class CreateKnifePageComponent implements OnInit {
     })
   });
 
-  imageFile: File | null = null;
-  imageFiles: File[] = [];
+  imageFile: File | null = null
+  imageFiles: File[] = []
 
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

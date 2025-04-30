@@ -7,11 +7,7 @@ namespace KnifeShop.DB
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            //Database.EnsureDeleted();
-            Database.EnsureCreated();
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Knife> Knifes { get; set; }
         public DbSet<KnifeInfo> KnifesInfo { get; set; }
