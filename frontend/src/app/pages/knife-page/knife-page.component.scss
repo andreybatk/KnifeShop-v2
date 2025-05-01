@@ -144,7 +144,7 @@
     color:var(--light-color);
     
     &.active {
-      color:var(--red-contrast-color)
+      color:var(--primary-dark-color)
     }
 
     transition: transform 0.2s ease-in-out;

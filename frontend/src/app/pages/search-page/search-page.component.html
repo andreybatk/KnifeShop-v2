@@ -1,5 +1,10 @@
 <div class="catalog-container">
-  <h1 class="catalog-title">Каталог ножей</h1>
+  <div class="catalog-title"> 
+    <h1 class="h1">
+      Каталог ножей <span *ngIf="category">{{ category.name }}</span>
+    </h1>
+  </div>
+  
 
   <div class="catalog-controls">
     <input type="text" placeholder="Поиск..." [(ngModel)]="search" (input)="onSearch()" class="tt-input" />

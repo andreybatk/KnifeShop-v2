@@ -31,7 +31,7 @@ namespace KnifeShop.DB.Repositories.Knifes
         /// Get Knifes with Pagination
         /// </summary>
         /// <returns>List<Knife>; Total Count elements</returns>
-        Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId, List<long>? CategoryIds);
+        Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId, int? categoryId);
         /// <summary>
         /// Delete
         /// </summary>

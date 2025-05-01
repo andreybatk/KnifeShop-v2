@@ -100,7 +100,7 @@ namespace KnifeShop.API.Controllers
                 request.Page,
                 request.PageSize,
                 userId,
-                request.CategoryIds
+                request.CategoryId
             );
 
             var response = new KnifesWithTotalCountResponse

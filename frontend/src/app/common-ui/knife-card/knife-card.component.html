@@ -3,15 +3,11 @@
     <div class="knife-card-main">
       <img [src]="knife.image | imgUrl" alt="" class="knife-card__avatar">
 
-      <div class="knife-card__name">
-        <strong class="h6">{{knife.title}}</strong>
-        <span
-        *ngFor="let category of knife.categories"
-        class="subtitle">
-        </span>
-      </div>
     </div>
-
+    
+    <div class="knife-card__name">
+      <strong class="h6">{{knife.title}}</strong>
+    </div>
     <div class="knife-card__price">
       {{knife.price}} &#8381;
       <p [class]="knife.isOnSale ? 'knife-available' : 'knife-unavailable'">{{ knife.isOnSale ? 'Есть в наличии' : 'Отсутствует в наличии' }}</p>

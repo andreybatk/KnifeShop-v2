@@ -4,10 +4,14 @@ import { KnifeCardComponent } from '../../common-ui/knife-card/knife-card.compon
 import { GetKnifesPaginationDto, KnifeBriefly } from '../../data/interfaces/knife.interface';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ActivatedRoute } from '@angular/router';
+import { Category } from '../../data/interfaces/category.interface';
+import { CategoryService } from '../../data/services/category.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-search-page',
-  imports: [KnifeCardComponent, FormsModule, NgxPaginationModule],
+  imports: [CommonModule, KnifeCardComponent, FormsModule, NgxPaginationModule],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.scss',
   providers: [KnifeService]
@@ -15,7 +19,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 export class SearchPageComponent implements OnInit {
   knifeService = inject(KnifeService)
-  
+  categoryService = inject(CategoryService)
+  route = inject(ActivatedRoute)
+  category: Category | null = null;
+
   search = '';
   sortItem = 'title';
   sortOrder: 'asc' | 'desc' = 'asc';
@@ -23,9 +30,24 @@ export class SearchPageComponent implements OnInit {
   pageSize: number = 12;
   totalItems: number = 0;
   knifesBriefly: KnifeBriefly[] = [];
+  categoryId: number | null = null;
 
   ngOnInit() {
-    this.getKnifes()
+    this.route.queryParamMap.subscribe(params => {
+      const categoryIdParam = Number(params.get('categoryId'));
+      this.categoryId = isNaN(categoryIdParam) ? null : categoryIdParam;
+  
+      if (this.categoryId) {
+        this.categoryService.getCategory(this.categoryId).subscribe(response => {
+          this.category = response;
+        });
+      } else {
+        this.category = null;
+      }
+  
+      this.page = 1;
+      this.getKnifes();
+    });
   }
 
   getKnifes() {
@@ -35,7 +57,7 @@ export class SearchPageComponent implements OnInit {
       sortOrder: this.sortOrder,
       page: this.page,
       pageSize: this.pageSize,
-      categoryIds: null //TODO
+      categoryId: this.categoryId
     };
 
     this.knifeService.getKnifesPaginated(request).subscribe(response => {

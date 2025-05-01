@@ -4,9 +4,12 @@
   padding: 32px;
 }
 
-.catalog-title {
-  color: var(--light-color);
-  margin-bottom: 24px;
+.catalog-title h1 {
+  white-space: nowrap;
+}
+
+.catalog-title span {
+  font-weight: 400;
 }
 
 .catalog-controls {

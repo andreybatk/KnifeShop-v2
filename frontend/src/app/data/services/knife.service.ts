@@ -22,11 +22,15 @@ export class KnifeService {
     if (request.sortOrder) {
       params = params.set('sortOrder', request.sortOrder);
     }
-    if (request.page !== null) {
+    if (request.page) {
       params = params.set('page', request.page.toString());
     }
-    if (request.pageSize !== null) {
+    if (request.pageSize) {
       params = params.set('pageSize', request.pageSize.toString());
+    }
+
+    if (request.categoryId) {
+      params = params.set('categoryId', request.categoryId);
     }
   
     return this.http.get<KnifesPaginated>(`${this.baseApiUrl}/paginated`, { params });

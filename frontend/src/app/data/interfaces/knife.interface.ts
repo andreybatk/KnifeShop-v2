@@ -69,5 +69,5 @@ export interface GetKnifesPaginationDto {
   sortOrder: 'asc' | 'desc' | null;
   page: number | null;
   pageSize: number | null;
-  categoryIds: number[] | null,
+  categoryId: number | null,
 }

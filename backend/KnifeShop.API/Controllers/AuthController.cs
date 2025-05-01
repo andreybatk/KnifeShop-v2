@@ -1,14 +1,12 @@
 ﻿using KnifeShop.API.Validators;
 using KnifeShop.BL.Services.Auth;
 using KnifeShop.Contracts.Auth;
-using KnifeShop.Contracts.Google;
 using KnifeShop.DB.Models;
 using KnifeShop.DB.Repositories.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace KnifeShop.API.Controllers
 {
@@ -35,11 +33,6 @@ namespace KnifeShop.API.Controllers
         [ProducesResponseType(typeof(object), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var registrationUser = new User { UserName = registerRequest.Username, Email = registerRequest.Email };
 
             IdentityResult result = await _userManager.CreateAsync(registrationUser, registerRequest.Password);
@@ -58,11 +51,6 @@ namespace KnifeShop.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var user = await _userManager.FindByNameAsync(loginRequest.Username);
             if (user == null)
             {
@@ -93,11 +81,6 @@ namespace KnifeShop.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             bool isValidRefreshToken = _refreshTokenValidator.Validate(refreshRequest.RefreshToken);
             if (!isValidRefreshToken)
             {
@@ -140,9 +123,9 @@ namespace KnifeShop.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout()
         {
-            var rawUserId = HttpContext.User.FindFirstValue("ID");
+            var userIdString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (!Guid.TryParse(rawUserId, out Guid userId))
+            if (!Guid.TryParse(userIdString, out Guid userId))
             {
                 return Unauthorized();
             }

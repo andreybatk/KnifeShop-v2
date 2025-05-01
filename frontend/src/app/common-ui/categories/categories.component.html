@@ -1,0 +1,18 @@
+<div class="categories">
+  <h2 class="h2">Категории ножей</h2>
+  <h5 class="h5">Выберите категорию, чтобы начать поиск идеального клинка</h5>
+
+  <div class="category-grid">
+    <a
+      *ngFor="let category of categories"
+      class="category-card"
+      [routerLink]="['/search']"
+      [queryParams]="{ categoryId: category.id }"
+    >
+      <img [src]="category.image | imgUrl" [alt]="category.name" />
+      <div class="category-name">{{ category.name }}</div>
+    </a>
+  </div>
+
+  <button class="btn" routerLink="/search">ПЕРЕЙТИ К КАТАЛОГУ</button>
+</div>

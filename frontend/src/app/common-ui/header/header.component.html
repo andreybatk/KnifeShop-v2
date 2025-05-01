@@ -18,10 +18,16 @@
   
       <ul class="dropdown" *ngIf="isDropdownOpen">
         <li *ngIf="authService.isManager" routerLink="/admin/admin-panel">Админ панель</li>
-        <li *ngIf="authService.isAuth" routerLink="/profile/my-profile">Профиль {{ authService.username }}</li>
+        <li *ngIf="authService.isAuth" routerLink="/profile/my-profile">Личный кабинет</li>
         <li *ngIf="authService.isAuth" (click)="authService.logout()">Выйти</li>
         <li *ngIf="!authService.isAuth" routerLink="/login">Вход</li>
       </ul>
     </div>
   </div>
 </header>
+
+<div class="category-bar">
+  <a *ngFor="let category of categories" [routerLink]="['/search']" [queryParams]="{ categoryId: category.id }">
+    {{ category.name }}
+  </a>
+</div>

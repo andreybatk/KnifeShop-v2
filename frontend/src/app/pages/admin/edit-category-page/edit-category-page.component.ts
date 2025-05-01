@@ -69,6 +69,17 @@ export class EditCategoryPageComponent implements OnInit{
     }
   }
 
+  moveCategory(id: number, isMoveUp: boolean) {
+    this.categoryService.moveCategory(id, isMoveUp).subscribe({
+      next: () => {
+        this.loadCategories();
+      },
+      error: () => {
+        this.errorMessage = 'Не удалось переместить категорию.';
+      }
+    });
+  }
+
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {

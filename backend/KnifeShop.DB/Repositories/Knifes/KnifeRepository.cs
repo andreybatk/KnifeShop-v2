@@ -87,7 +87,7 @@ namespace KnifeShop.DB.Repositories.Knifes
             return 0;
         }
 
-        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId, List<long>? CategoryIds)
+        public async Task<(List<GetKnifesResponse> Items, int TotalCount)> GetPaginated(string? search, string? sortItem, string? order, int page, int pageSize, Guid? userId, int? categoryId)
         {
             var query = _context.Knifes
                 .Include(k => k.KnifeInfo)
@@ -95,7 +95,7 @@ namespace KnifeShop.DB.Repositories.Knifes
                     .ThenInclude(kc => kc.Category)
                 .Where(k =>
                     (string.IsNullOrWhiteSpace(search) || k.Title.ToLower().Contains(search.ToLower())) &&
-                    (CategoryIds == null || k.KnifeCategories.Any(kc => CategoryIds.Contains(kc.CategoryId)))
+                    (categoryId == null || k.KnifeCategories.Any(kc => categoryId == kc.CategoryId))
                     );
 
             Expression<Func<Knife, object>> selectorKey = sortItem?.ToLower() switch
@@ -106,9 +106,18 @@ namespace KnifeShop.DB.Repositories.Knifes
                 _ => knife => knife.Id
             };
 
-            query = order == "desc"
-                ? query.OrderByDescending(selectorKey)
-                : query.OrderBy(selectorKey);
+            if (order == "desc")
+            {
+                query = query
+                    .OrderByDescending(k => k.IsOnSale)
+                    .ThenByDescending(selectorKey);
+            }
+            else
+            {
+                query = query
+                    .OrderByDescending(k => k.IsOnSale)
+                    .ThenBy(selectorKey);
+            }
 
             int totalCount = await query.CountAsync();
 
@@ -128,7 +137,6 @@ namespace KnifeShop.DB.Repositories.Knifes
                     IsOnSale = k.IsOnSale,
                     IsFavorite = userId.HasValue && k.FavoriteKnifes.Any(f => f.UserId == userId)
                 })
-                .OrderByDescending(k => k.IsOnSale)
                 .ToListAsync();
 
             return (items, totalCount);

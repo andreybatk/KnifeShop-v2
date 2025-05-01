@@ -1,8 +1,13 @@
+:host {
+  display:grid;
+  grid-template-columns: 1fr;
+  margin: 0 5%;
+}
+
 .knife-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
-  padding: 12px;
 }
 
 .knife-wrapper{

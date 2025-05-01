@@ -15,6 +15,10 @@ export class CategoryService {
     return this.http.get<Category[]>(`${this.baseApiUrl}`);
   }
 
+  getCategory(id: number) {
+    return this.http.get<Category>(`${this.baseApiUrl}/${id}`);
+  }
+
   addCategory(name: string, image: File | null = null) {
     const formData = new FormData()
     formData.append('name', name)
@@ -28,5 +32,9 @@ export class CategoryService {
     
   deleteCategory(id: number) {
     return this.http.delete(`${this.baseApiUrl}/${id}`);
+  }
+
+  moveCategory(id: number, isMoveUp: boolean) {
+    return this.http.patch(`${this.baseApiUrl}/${id}`, { isMoveUp } );
   }
 }
