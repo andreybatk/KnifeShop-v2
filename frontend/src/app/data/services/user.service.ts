@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { KnifesPaginated } from '../interfaces/knife.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   http = inject(HttpClient);
-  baseApiUrl = 'http://localhost:5000/api/user'
+  private baseUrl = environment.apiUrl
+  baseApiUrl = `${this.baseUrl}/api/user`
 
   addFavoriteKnife(id: number) {
     return this.http.post(`${this.baseApiUrl}/favorite_knife/${id}`, null)

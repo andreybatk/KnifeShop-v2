@@ -3,7 +3,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid var(--light-color);
 }
 
 .nav a {
@@ -43,7 +42,7 @@
   position: absolute;
   top: calc(100% + 1.5rem);
   right: 0;
-  border: 1px solid #ddd;
+  border: 1px solid var(--light-color);;
   border-radius: 4px;
   list-style: none;
   margin: 0;
@@ -71,10 +70,10 @@
 
 .category-bar {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 0.4rem;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--light-color-a);
+  background: rgba(0, 0, 0, 0.2);
 
   a {
     color: var(--light-color);

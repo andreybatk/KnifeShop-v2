@@ -1,4 +1,10 @@
 :host {
   display:block;
+  background: rgba(0, 0, 0, 0.2);
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  min-height: 100vh;
+
+  border: 1px solid var(--light-color);
 }
 

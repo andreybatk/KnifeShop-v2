@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 import { AuthService } from '../../auth/auth.service';
 import { FavoriteService } from '../../data/services/favorite.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-knife-page',
@@ -21,8 +22,8 @@ export class KnifePageComponent implements OnInit {
   favoriteService = inject(FavoriteService)
 
   knife:Knife | null = null;
-  baseUrl = 'http://localhost:4200/knife'
-  baseApiUrl = 'http://localhost:5000';
+  private baseUrl = environment.apiUrl
+  baseApiUrl = `${this.baseUrl}/api/knife`
   id:number | null = null;
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class KnifePageComponent implements OnInit {
   openImage(url: string | null) {
     if(url)
     {
-      this.selectedImage = `${this.baseApiUrl}${url}`;
+      this.selectedImage = `${this.baseUrl}${url}`;
     }
   }
 
@@ -50,7 +51,7 @@ export class KnifePageComponent implements OnInit {
   }
 
   onClickSendMessage() {
-    const message = `Здравствуйте. Меня заинтересовал товар ${this.knife?.title} (${this.baseUrl}/${this.knife?.id}).`;
+    const message = `Здравствуйте. Меня заинтересовал товар ${this.knife?.title} (${this.baseApiUrl}/${this.knife?.id}).`;
     const username = 'therealbushcraft';
     const url = `https://t.me/${username}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');

@@ -3,3 +3,12 @@
   max-width: 900px;
   margin: 0 auto;
 }
+
+.delivery-href {
+  color: var(--light-color);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

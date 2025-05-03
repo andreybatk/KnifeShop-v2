@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateKnifeDto, EditKnifeDto, GetKnifesPaginationDto, Knife, KnifeBriefly, KnifesPaginated } from '../interfaces/knife.interface';
 import { Category } from '../interfaces/category.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,8 @@ import { Category } from '../interfaces/category.interface';
 
 export class CategoryService {
   http = inject(HttpClient);
-  baseApiUrl = 'http://localhost:5000/api/category'
+  private baseUrl = environment.apiUrl
+  baseApiUrl = `${this.baseUrl}/api/category`
 
   getCategories() {
     return this.http.get<Category[]>(`${this.baseApiUrl}`);

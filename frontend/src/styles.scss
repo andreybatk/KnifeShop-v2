@@ -19,7 +19,6 @@
 
 body {
   font-family: 'JetBrains Mono';
-  background: var(--dark-color);
   color: var(--light-color);
 
   background-image: url('/assets/imgs/background.jpg');
@@ -27,6 +26,8 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+
+  margin: 0;
 }
 
 .skill-tag {

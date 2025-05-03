@@ -1,12 +1,10 @@
-:host {
-  padding: 0.5rem 1rem;
-}
-
 .knife-card {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   color: var(--light-color);
+  padding: 8px;
+  margin: 8px;
 }
 
 .top-section {

@@ -17,7 +17,6 @@ import { EditRolesPageComponent } from './pages/admin/edit-roles-page/edit-roles
 import { EditCategoryPageComponent } from './pages/admin/edit-category-page/edit-category-page.component';
 import { ContactsPageComponent } from './pages/contacts-page/contacts-page.component';
 import { DeliveryPageComponent } from './pages/delivery-page/delivery-page.component';
-import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 
 export const routes: Routes = [
 

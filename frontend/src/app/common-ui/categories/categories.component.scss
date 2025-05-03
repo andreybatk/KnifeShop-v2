@@ -6,13 +6,13 @@
 
 .categories {
   width: 1200px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--light-color);
   border-radius: 12px;
   padding: 40px 30px;
   text-align: center;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px);
 }
 
 .categories .h2 {
