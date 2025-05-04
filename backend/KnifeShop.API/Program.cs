@@ -83,8 +83,8 @@ namespace KnifeShop.API
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    //policy.WithOrigins("https://myknifeshop.ru");
-                    policy.AllowAnyOrigin();
+                    policy.WithOrigins("https://bushcraft-knives.ru");
+                    //policy.AllowAnyOrigin();
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
                 });
@@ -129,6 +129,7 @@ namespace KnifeShop.API
                 app.UseSwaggerUI();
             }
 
+            
             var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
             if (!Directory.Exists(uploadsPath))
             {
@@ -144,8 +145,8 @@ namespace KnifeShop.API
             //app.UseHttpsRedirection();
 
             app.UseCors(builder => builder
-                //.WithOrigins("https://myknifeshop.ru")
-                .AllowAnyOrigin()
+                .WithOrigins("https://bushcraft-knives.ru")
+                //.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
