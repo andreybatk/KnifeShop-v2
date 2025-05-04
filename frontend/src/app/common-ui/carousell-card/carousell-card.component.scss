@@ -1,13 +1,12 @@
 .knife-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   border: 1px solid;
   border-radius: 16px;
   padding: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
-  max-width: 320px;
   margin: 2%;
   background: rgba(0, 0, 0, 0.2);
   &:hover {
@@ -25,7 +24,7 @@
       border-radius: 12px;
       object-fit: cover;
       margin-right: 16px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid var(--light-color);
     }
 
     .knife-card__name {

@@ -8,13 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../data/interfaces/category.interface';
 import { CategoryService } from '../../data/services/category.service';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from '../../common-ui/loader/loader.component';
 
 @Component({
   selector: 'app-search-page',
-  imports: [CommonModule, KnifeCardComponent, FormsModule, NgxPaginationModule],
+  imports: [CommonModule, KnifeCardComponent, FormsModule, NgxPaginationModule, LoaderComponent],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.scss',
-  providers: [KnifeService]
+  providers: []
 })
 
 export class SearchPageComponent implements OnInit {
@@ -22,6 +23,7 @@ export class SearchPageComponent implements OnInit {
   categoryService = inject(CategoryService)
   route = inject(ActivatedRoute)
   category: Category | null = null;
+  isLoading: boolean = true;
 
   search = '';
   sortItem = 'title';
@@ -64,6 +66,7 @@ export class SearchPageComponent implements OnInit {
       this.knifesBriefly = response.knifes
       this.totalItems = response.totalCount
       this.updatePaginationConfig()
+      this.isLoading = false
     });
   }
 

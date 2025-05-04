@@ -5,7 +5,6 @@
     </h1>
   </div>
   
-
   <div class="catalog-controls">
     <input type="text" placeholder="Поиск..." [(ngModel)]="search" (input)="onSearch()" class="tt-input" />
     <select [(ngModel)]="sortItem" (change)="onSortChange()" class="tt-input">
@@ -19,6 +18,7 @@
     </select>
   </div>
 
+  <app-loader *ngIf="isLoading" [fullScreen]="false"></app-loader>
   <div class="knife-grid">
     @for (knife of knifesBriefly | paginate: paginationConfig; track knife.id) {
       <div class="knife-wrapper">
@@ -26,6 +26,7 @@
       </div>
     }
   </div>
+
 
   <pagination-controls
   class="pagination"

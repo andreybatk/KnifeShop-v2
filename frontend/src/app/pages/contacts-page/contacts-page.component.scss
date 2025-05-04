@@ -15,6 +15,19 @@
 .contact-info {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.contact-item {
+  flex: 1 1 30%;
+  min-width: 200px;
+}
+
+.contact-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .contact-form a {
@@ -22,10 +35,6 @@
   font-weight: 800;
   margin-bottom: 10px;
   margin-right: 10px;
-}
-
-.contact-item {
-  width: 30%;
 }
 
 .contact-item h3 {
@@ -39,4 +48,23 @@
 
 .contact-item a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .contacts-page {
+    padding: 20px;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-item {
+    width: 100%;
+  }
+
+  .contact-form {
+    justify-content: space-between;
+  }
 }

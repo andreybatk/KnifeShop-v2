@@ -33,7 +33,8 @@ export class CarousellComponent implements OnInit {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToScroll: 1,
+          arrows: false
         }
       }
     ]

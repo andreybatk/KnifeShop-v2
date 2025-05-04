@@ -1,7 +1,10 @@
 :host {
   display: flex;
+  align-items: center;
   justify-content: center;
 }
-.slick-wrapper{
-  width: 100vh;
+
+.slick-wrapper {
+  width: 100%;
+  max-width: 1200px;
 }
