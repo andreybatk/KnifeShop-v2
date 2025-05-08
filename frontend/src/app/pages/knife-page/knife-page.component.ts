@@ -23,7 +23,6 @@ export class KnifePageComponent implements OnInit {
 
   knife:Knife | null = null;
   private baseUrl = environment.apiUrl
-  baseApiUrl = `${this.baseUrl}/api/knife`
   id:number | null = null;
 
   ngOnInit() {
@@ -51,7 +50,7 @@ export class KnifePageComponent implements OnInit {
   }
 
   onClickSendMessage() {
-    const message = `Здравствуйте. Меня заинтересовал товар ${this.knife?.title} (${this.baseApiUrl}/${this.knife?.id}).`;
+    const message = `Здравствуйте. Меня заинтересовал товар ${this.knife?.title} (${this.baseUrl}/knife/${this.knife?.id}).`;
     const username = 'therealbushcraft';
     const url = `https://t.me/${username}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
