@@ -11,8 +11,8 @@ services:
           POSTGRES_DB: knifeshop
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
+        #ports:
+        #  - 5432:5432
         volumes:
           - knifeshop-postgres-data:/var/lib/postgresql/data
         networks:
@@ -25,6 +25,8 @@ services:
         build:
           context: .
           dockerfile: KnifeShop.API/Dockerfile
+        volumes:
+          - /var/www/Uploads:/app/Uploads
         ports:
           - "5000:8080"
           - "5001:8081"

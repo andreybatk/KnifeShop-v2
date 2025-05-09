@@ -129,18 +129,11 @@ namespace KnifeShop.API
                 app.UseSwaggerUI();
             }
 
-            
-            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            var uploadsPath = Path.Combine("/app", "Uploads");
             if (!Directory.Exists(uploadsPath))
             {
                 Directory.CreateDirectory(uploadsPath);
             }
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
-                RequestPath = "/Uploads"
-            });
 
             //app.UseHttpsRedirection();
 

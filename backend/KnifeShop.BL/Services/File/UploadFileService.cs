@@ -13,7 +13,7 @@ namespace KnifeShop.BL.Services.File
                 var uploadPath = Path.Combine("Uploads", "Knives");
                 Directory.CreateDirectory(uploadPath);
 
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var fileName = Guid.NewGuid().ToString().Replace("-", "_") + Path.GetExtension(imageFile.FileName);
                 var filePath = Path.Combine(uploadPath, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
